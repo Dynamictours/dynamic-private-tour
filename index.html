@@ -1,0 +1,1713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Dynamic Tour - China Travel Guide</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <!-- Open Graph Meta Tags for WhatsApp and Social Media -->
+    <meta property="og:image" content="https://jeanetdjayat-code.github.io/dynamic-tour/images/logo.jpeg.jpeg">
+    <meta property="og:image:secure_url" content="https://jeanetdjayat-code.github.io/dynamic-tour/images/logo.jpeg.jpeg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="400">
+    <meta property="og:image:height" content="400">
+    <meta property="og:title" content="Dynamic Tour - China Travel Guide">
+    <meta property="og:description" content="Discover China's beauty with our experienced tour guides and personalized travel experiences.">
+    <meta property="og:url" content="https://jeanetdjayat-code.github.io/dynamic-tour/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Dynamic Tour">
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Dynamic Tour - China Travel Guide">
+    <meta name="twitter:description" content="Discover China's beauty with our experienced tour guides and personalized travel experiences.">
+    <meta name="twitter:image" content="https://jeanetdjayat-code.github.io/dynamic-tour/images/logo.jpeg.jpeg">
+    <meta name="twitter:site" content="@dynamictour">
+    <!-- Additional Meta Tags for Better Compatibility -->
+    <meta name="description" content="Discover China's beauty with our experienced tour guides and personalized travel experiences.">
+    <link rel="image_src" href="https://jeanetdjayat-code.github.io/dynamic-tour/images/logo.jpeg.jpeg">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea, select {
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* ----------------- TOP NAVBAR (EXTRA LARGE LOGO + PERFORMANCE FIX) ----------------- */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.8rem 2rem;
+            gap: 0;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 100px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            margin-left: auto;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s; /* Added transform for hover */
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px); /* Subtle hover effect */
+        }
+        .menu-btn {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.8rem;
+            min-width: 48px;
+            min-height: 48px;
+            border-radius: 8px;
+            transition: background-color 0.2s;
+            margin-left: auto;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .menu-btn:hover,
+        .menu-btn:active {
+            background-color: var(--gray);
+        }
+
+        /* Mobile Responsive Navbar (Enhanced + Bug Fixes) */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: white;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem 1rem;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                gap: 0;
+                z-index: 999;
+                border-top: 2px solid var(--primary-light);
+            }
+            .nav-links a {
+                padding: 1rem 1.5rem;
+                font-size: 1rem;
+                border-bottom: 1px solid var(--gray);
+                transition: background-color 0.2s;
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+            }
+            .nav-links a:hover,
+            .nav-links a:active {
+                background-color: var(--light);
+                color: var(--accent);
+            }
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-btn {
+                display: flex;
+            }
+            .logo-img {
+                 height: 80px;
+             }
+             .logo-text {
+                 font-size: 1.4rem;
+             }
+            .logo-container {
+                gap: 0.5rem;
+            }
+        }
+
+        /* Mobile optimization for small screens (320px-480px) */
+        @media (max-width: 480px) {
+            .logo-text {
+                 font-size: 1.2rem;
+             }
+             .logo-img {
+                 height: 65px;
+             }
+            .nav-container {
+                padding: 0.6rem 0.8rem;
+            }
+            .nav-links {
+                padding: 1rem 1.5rem; /* Tighter padding for small screens */
+            }
+        }
+
+        /* ----------------- BANNER (Mobile Optimized + Performance) ----------------- */
+        .banner {
+            height: clamp(280px, 60vw, 500px); /* Better mobile height ratio */
+            background: linear-gradient(rgba(15,48,87,0.6), rgba(15,48,87,0.7)),
+                        url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=China%20landscape%20panoramic%20view%20mountains%20and%20rivers&image_size=landscape_16_9') center/cover no-repeat; /* Added no-repeat */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            /* Add loading fallback */
+            background-color: var(--primary);
+        }
+        .banner h1 {
+            font-size: clamp(1.6rem, 5vw, 3rem); /* Better mobile scaling */
+            margin-bottom: 0.6rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2; /* Prevent text overlap on mobile */
+        }
+        .banner p {
+            font-size: clamp(0.8rem, 2.5vw, 1rem);
+            max-width: 95%; /* Fit on mobile screens */
+            opacity: 0.95;
+            line-height: 1.4;
+            margin-bottom: 1.5rem;
+        }
+        
+        .banner-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            padding: 0.9rem 1.6rem;
+            min-height: 48px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: clamp(0.85rem, 2vw, 0.95rem);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            font-weight: 700;
+        }
+        
+        .btn-primary:hover,
+        .btn-primary:active {
+            background: #e67e22;
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-secondary:hover,
+        .btn-secondary:active {
+            background: white;
+            color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .banner {
+                height: clamp(300px, 70vw, 500px);
+                padding: 1.5rem 1rem;
+            }
+            .banner-buttons {
+                flex-direction: column;
+                align-items: center;
+                gap: 0.8rem;
+            }
+            
+            .btn {
+                width: 220px;
+                text-align: center;
+                padding: 0.9rem 1.5rem;
+                min-height: 50px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .banner h1 {
+                font-size: clamp(1.4rem, 6vw, 2rem);
+            }
+            .banner p {
+                font-size: clamp(0.75rem, 3vw, 0.9rem);
+                line-height: 1.3;
+            }
+            .btn {
+                width: 100%;
+                max-width: 280px;
+                padding: 0.9rem 1.2rem;
+                min-height: 52px;
+            }
+        }
+
+        /* ----------------- HEADER (Mobile Optimized + Visual Polish) ----------------- */
+        header {
+            background: white;
+            border-bottom: 3px solid var(--primary);
+            padding: 1.2rem 1rem;
+            text-align: center;
+        }
+        header h1 {
+            color: var(--primary);
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            margin-bottom: 0.4rem;
+            line-height: 1.2;
+        }
+        header p {
+            color: var(--dark);
+            font-size: clamp(0.8rem, 2vw, 1rem);
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.4;
+        }
+        
+        @media (max-width: 480px) {
+            header {
+                padding: 1rem 0.8rem;
+            }
+            header h1 {
+                font-size: clamp(1.2rem, 5vw, 1.8rem);
+            }
+            header p {
+                font-size: clamp(0.75rem, 2.5vw, 0.9rem);
+            }
+        }
+
+        /* ----------------- MAIN CONTENT (Enhanced + Performance) ----------------- */
+        .main-content {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* ----------------- DESTINATIONS SECTION (Polished + Mobile Responsive) ----------------- */
+        .destinations {
+            margin-bottom: 2.5rem;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .section-title h2 {
+            color: var(--primary);
+            font-size: clamp(1.4rem, 4vw, 2rem);
+            display: inline-block;
+            padding: 0 1rem;
+            background: var(--light);
+            position: relative;
+            z-index: 1;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gray);
+            z-index: 0;
+        }
+
+        /* Routes Section */
+        .routes-section {
+            margin: 1.5rem auto 2rem;
+            max-width: 1000px;
+            padding: 0 1rem;
+        }
+        .routes-title {
+            text-align: center;
+            color: var(--dark);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+        }
+        .routes-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 1rem;
+        }
+        .route-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .route-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            border-color: var(--accent);
+        }
+        .route-card:active {
+            transform: translateY(-1px);
+        }
+        .route-number {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            line-height: 36px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 0.8rem;
+        }
+        .route-card h4 {
+            color: var(--primary);
+            font-size: 1.1rem;
+            margin-bottom: 0.6rem;
+        }
+        .route-cities {
+            color: var(--dark);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        .route-cities span {
+            color: var(--accent);
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .routes-section {
+                margin: 1rem auto 1.5rem;
+            }
+            .routes-buttons {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.8rem;
+            }
+            .route-card {
+                padding: 1rem;
+            }
+            .route-number {
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                font-size: 1rem;
+            }
+            .route-card h4 {
+                font-size: 1rem;
+            }
+            .route-cities {
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .routes-buttons {
+                grid-template-columns: 1fr;
+            }
+            .route-card {
+                display: flex;
+                align-items: center;
+                text-align: left;
+                gap: 1rem;
+            }
+            .route-number {
+                margin-bottom: 0;
+                flex-shrink: 0;
+            }
+        }
+
+        .destination-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+
+        .card-img {
+            height: 180px;
+            overflow: hidden;
+        }
+        .card-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .destination-card:hover .card-img img {
+            transform: scale(1.05);
+        }
+
+        .card-content {
+            padding: 1.2rem;
+        }
+        .card-content h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.6rem;
+        }
+        .card-content p {
+            color: var(--dark);
+            margin-bottom: 0.8rem;
+            line-height: 1.5;
+            font-size: 0.9rem;
+        }
+        .card-btn {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 0.75rem 1.5rem;
+            min-height: 44px;
+            min-width: 120px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: background 0.3s, transform 0.2s, box-shadow 0.2s;
+            font-size: 0.9rem;
+            text-align: center;
+        }
+        .card-btn:hover,
+        .card-btn:active {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15, 48, 87, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .destinations {
+                margin-bottom: 2rem;
+            }
+            .section-title {
+                margin-bottom: 1.2rem;
+            }
+            .destination-grid {
+                gap: 1.2rem;
+                margin-top: 1.2rem;
+            }
+            .card-content {
+                padding: 1rem;
+            }
+            .card-content h3 {
+                font-size: 1.1rem;
+            }
+            .card-content p {
+                font-size: 0.85rem;
+            }
+            .card-btn {
+                padding: 0.7rem 1.3rem;
+                font-size: 0.85rem;
+                min-height: 44px;
+                min-width: 100px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .destination-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            .card-img {
+                height: 160px;
+            }
+            .card-btn {
+                width: 100%;
+                padding: 0.8rem 1rem;
+                font-size: 0.9rem;
+            }
+            .card-content {
+                padding: 0.9rem;
+            }
+        }
+
+        /* ----------------- PROVINCE BUTTONS SECTION ----------------- */
+        .province-buttons-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--gray);
+        }
+        .province-buttons-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .province-buttons-title h3 {
+            color: var(--primary);
+            font-size: clamp(1.2rem, 3vw, 1.6rem);
+        }
+        .province-buttons-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .province-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .province-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+        .province-btn.active {
+            background: var(--accent);
+        }
+        .province-btn .arrow {
+            transition: transform 0.3s ease;
+        }
+        .province-btn.active .arrow {
+            transform: rotate(180deg);
+        }
+        .province-cities-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .province-cities {
+            display: none;
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            animation: slideDown 0.3s ease;
+        }
+        .province-cities.active {
+            display: block;
+        }
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .province-cities h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+        .city-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .city-link {
+            display: inline-block;
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .city-link:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+        @media (max-width: 600px) {
+            .province-btn {
+                padding: 0.7rem 1.2rem;
+                font-size: 0.85rem;
+            }
+        }
+
+        /* ----------------- MAP SECTION ----------------- */
+        .map-section {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .map-title {
+            margin-bottom: 1.5rem;
+        }
+        .map-title h3 {
+            color: var(--primary);
+            font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+        }
+        .map-container {
+            max-width: 900px;
+            margin: 0 auto;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .map-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .map-background {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        .map-markers {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        .map-marker {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            pointer-events: auto;
+            z-index: 10;
+        }
+        .marker-dot {
+            width: 16px;
+            height: 16px;
+            background: #ff6b35;
+            border: 3px solid white;
+            border-radius: 50%;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            animation: pulse 2s infinite;
+            transition: transform 0.3s ease;
+        }
+        .map-marker:hover .marker-dot {
+            transform: scale(1.3);
+            background: #ff8c5a;
+        }
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 12px rgba(255, 107, 53, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+            }
+        }
+        .marker-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+            width: 280px;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            z-index: 100;
+        }
+        .map-marker:hover .marker-tooltip {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(-50%) translateY(0);
+        }
+        .marker-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 10px solid transparent;
+            border-top-color: white;
+        }
+        .tooltip-image {
+            width: 100%;
+            height: 150px;
+            overflow: hidden;
+        }
+        .tooltip-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .tooltip-content {
+            padding: 12px;
+            text-align: left;
+        }
+        .tooltip-content h4 {
+            margin: 0 0 6px 0;
+            color: #2c5aa0;
+            font-size: 1rem;
+        }
+        .tooltip-content p {
+            margin: 0;
+            color: #666;
+            font-size: 0.85rem;
+            line-height: 1.4;
+        }
+
+        /* ----------------- CULTURE SECTION (Enhanced + Mobile Optimized) ----------------- */
+        .culture-section {
+            background: white;
+            padding: 3rem 1rem;
+            margin: 3rem 0;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .culture-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            .culture-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        .culture-text h3 {
+            color: var(--primary);
+            font-size: clamp(1.3rem, 4vw, 1.8rem);
+            margin-bottom: 1rem;
+        }
+        .culture-text p {
+            color: var(--dark);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .culture-img {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* ----------------- FOOTER (Enhanced + Mobile Responsive) ----------------- */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 1rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-top-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .footer-top-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-top-section p {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .hassle-text {
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.5rem;
+        }
+
+        .footer-middle-bottom-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        .footer-section {
+            min-width: 250px;
+            text-align: center;
+            width: 100%;
+        }
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .footer-section a:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: var(--accent);
+        }
+        
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* ----------------- WHATSAPP BUTTON (Fixed + Mobile Optimized) ----------------- */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: calc(2rem + var(--safe-bottom));
+            right: calc(2rem + var(--safe-right));
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            min-height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 998;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .whatsapp-btn:hover,
+        .whatsapp-btn:active {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+        .whatsapp-btn img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Mobile optimization for WhatsApp button */
+        @media (max-width: 480px) {
+            .whatsapp-btn {
+                width: 54px;
+                height: 54px;
+                min-width: 54px;
+                min-height: 54px;
+                bottom: calc(1.5rem + var(--safe-bottom));
+                right: calc(1.5rem + var(--safe-right));
+            }
+        }
+
+
+
+        /* ----------------- RESPONSIVE ADJUSTMENTS ----------------- */
+        @media (max-width: 768px) {
+            .main-content {
+                margin: 1.5rem auto;
+            }
+            .destinations {
+                margin-bottom: 2rem;
+            }
+            .culture-section {
+                padding: 2rem 1rem;
+                margin: 2rem 0;
+            }
+            footer {
+                padding: 2rem 1rem 1rem;
+                margin-top: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .destination-grid {
+                gap: 1.5rem;
+            }
+            .card-content {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour Logo" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links">
+                <a href="#home">Home</a>
+                <a href="#destinations">Destinations</a>
+                <a href="#culture">Culture</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section class="banner" id="home">
+        <h1>Discover China's Beauty</h1>
+        <p>Our high experienced tourguide will guide you through your trip! We also provide transportation in all sizes, from small cars to big buses!</p>
+        <div class="banner-buttons">
+            <a href="https://wa.me/6281318838877?text=Hello%20I%20am%20interested%20in%20your%20Private%20Tour%20service" class="btn btn-primary">Private Tour</a>
+            <a href="https://wa.me/6281318838877?text=Hello%20I%20am%20interested%20in%20your%20Car%20Rental%20service" class="btn btn-secondary">Car Rental</a>
+        </div>
+    </section>
+
+    <!-- Header -->
+    <header>
+        <h1>Experience our modern <span style="color: var(--accent); font-weight: 700;">Private Tour</span>!</h1>
+        <p>Discover the perfect blend of tradition and modernity with our personalized travel experiences.</p>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Destinations Section -->
+        <section class="destinations" id="destinations">
+            <div class="section-title">
+                <h2>Top Destinations</h2>
+            </div>
+            
+            <!-- Routes Section -->
+            <div class="routes-section">
+                <h3 class="routes-title">Select by Routes</h3>
+                <div class="routes-buttons">
+                    <div class="route-card">
+                        <div class="route-number">1</div>
+                        <h4>Route 1</h4>
+                        <p class="route-cities"><span>Shanghai</span> → <span>Beijing</span> → <span>Suzhou</span> → <span>Hangzhou</span> → <span>Nanjing</span> → <span>Shanghai</span></p>
+                    </div>
+                    <div class="route-card">
+                        <div class="route-number">2</div>
+                        <h4>Route 2</h4>
+                        <p class="route-cities"><span>Wuhan</span> → <span>Fenghuang</span> → <span>Zhangjiajie</span> → <span>Changsha</span> → <span>Wuhan</span></p>
+                    </div>
+                    <div class="route-card">
+                        <div class="route-number">3</div>
+                        <h4>Route 3</h4>
+                        <p class="route-cities"><span>Chengdu</span> → <span>Bipenggou</span> → <span>Chongqing</span> → <span>Chengdu</span></p>
+                    </div>
+                    <div class="route-card">
+                        <div class="route-number">4</div>
+                        <h4>Route 4</h4>
+                        <p class="route-cities"><span>Chengdu</span> → <span>Bipenggou</span> → <span>Siguniang</span> → <span>Chengdu</span></p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="destination-grid">
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Shanghai%20skyline%20modern%20city&image_size=landscape_16_9" alt="Shanghai">
+                    </div>
+                    <div class="card-content">
+                        <h3>Shanghai</h3>
+                        <p>China's largest city and financial hub, Shanghai blends modern skyscrapers with historical neighborhoods like the Bund and French Concession.</p>
+                        <a href="shanghai.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Beijing%20Forbidden%20City%20imperial%20palace&image_size=landscape_16_9" alt="Beijing">
+                    </div>
+                    <div class="card-content">
+                        <h3>Beijing</h3>
+                        <p>China's capital, home to iconic landmarks like the Forbidden City, Great Wall, and Temple of Heaven, steeped in thousands of years of history.</p>
+                        <a href="beijing.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/hangzhou.jpg" alt="Hangzhou">
+                    </div>
+                    <div class="card-content">
+                        <h3>Hangzhou</h3>
+                        <p>Famous for the scenic West Lake, Hangzhou is known as the "Paradise on Earth" with its beautiful gardens, temples, and tea plantations.</p>
+                        <a href="hangzhou.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20classical%20gardens%20traditional%20architecture&image_size=landscape_16_9" alt="Suzhou">
+                    </div>
+                    <div class="card-content">
+                        <h3>Suzhou</h3>
+                        <p>Known as the "Venice of the East," Suzhou is famous for its classical gardens, canals, and traditional silk production.</p>
+                        <a href="suzhou.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Wuhan%20Yellow%20Crane%20Tower%20cherry%20blossoms&image_size=landscape_16_9" alt="Wuhan">
+                    </div>
+                    <div class="card-content">
+                        <h3>Wuhan</h3>
+                        <p>Known as the "City of Sakura" for its stunning cherry blossoms in spring, Wuhan is located at the confluence of the Yangtze and Han Rivers, and is a major cultural and economic center with a rich history.</p>
+                        <a href="wuhan.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/orangeisle.jpg" alt="Changsha">
+                    </div>
+                    <div class="card-content">
+                        <h3>Changsha</h3>
+                        <p>Capital of Hunan Province, Changsha is known for its spicy cuisine, historical sites, and vibrant cultural scene.</p>
+                        <a href="changsha.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nanjing%20ancient%20capital%20historical%20city&image_size=landscape_16_9" alt="Nanjing">
+                    </div>
+                    <div class="card-content">
+                        <h3>Nanjing</h3>
+                        <p>Former capital of China, Nanjing boasts historical landmarks like the Ming Xiaoling Mausoleum and the Nanjing City Wall.</p>
+                        <a href="nanjing.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/chengdu.jpg" alt="Chengdu">
+                    </div>
+                    <div class="card-content">
+                        <h3>Chengdu</h3>
+                        <p>Home of the giant pandas and the culinary capital of China, Chengdu offers ancient history, spicy Sichuan cuisine, and laid-back lifestyle.</p>
+                        <a href="chengdu.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/chongqing.jpg" alt="Chongqing">
+                    </div>
+                    <div class="card-content">
+                        <h3>Chongqing</h3>
+                        <p>The Mountain City famous for its stunning 3D landscape, spicy hotpot, breathtaking night views, and unique stilt house architecture.</p>
+                        <a href="chongqing.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/fenghuang.jpeg" alt="Fenghuang">
+                    </div>
+                    <div class="card-content">
+                        <h3>Fenghuang</h3>
+                        <p>Phoenix Ancient Town, one of China's most beautiful water towns with traditional stilt houses, stone bridges, and magical night views.</p>
+                        <a href="fenghuang.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/zhangjiajie.jpg" alt="Zhangjiajie">
+                    </div>
+                    <div class="card-content">
+                        <h3>Zhangjiajie</h3>
+                        <p>The real Avatar Mountains with thousands of towering quartz sandstone pillars, glass bridges, and breathtaking natural scenery.</p>
+                        <a href="zhangjiajie.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+                <div class="destination-card">
+                    <div class="card-img">
+                        <img src="images/jiuzhaigou.jpg" alt="Jiuzhaigou">
+                    </div>
+                    <div class="card-content">
+                        <h3>Jiuzhaigou</h3>
+                        <p>Fairyland of turquoise lakes, cascading waterfalls, and snow-capped mountains - one of China's most spectacular natural wonders.</p>
+                        <a href="jiuzhaigou.html" class="card-btn">Learn More</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Province Buttons Section -->
+            <div class="province-buttons-section">
+                <div class="province-buttons-title">
+                    <h3>Browse by Province</h3>
+                </div>
+                <div class="province-buttons-container">
+                    <button class="province-btn" data-province="jiangsu">
+                        Jiangsu Province <span class="arrow">▼</span>
+                    </button>
+                    <button class="province-btn" data-province="zhejiang">
+                        Zhejiang Province <span class="arrow">▼</span>
+                    </button>
+                    <button class="province-btn" data-province="hubei">
+                        Hubei Province <span class="arrow">▼</span>
+                    </button>
+                    <button class="province-btn" data-province="hunan">
+                        Hunan Province <span class="arrow">▼</span>
+                    </button>
+                    <button class="province-btn" data-province="sichuan">
+                        Sichuan Province <span class="arrow">▼</span>
+                    </button>
+                </div>
+                <div class="province-cities-container">
+                    <div class="province-cities" data-province="jiangsu">
+                        <h4>Cities in Jiangsu Province:</h4>
+                        <div class="city-links">
+                            <a href="nanjing.html" class="city-link">Nanjing</a>
+                            <a href="suzhou.html" class="city-link">Suzhou</a>
+                        </div>
+                    </div>
+                    <div class="province-cities" data-province="zhejiang">
+                        <h4>Cities in Zhejiang Province:</h4>
+                        <div class="city-links">
+                            <a href="hangzhou.html" class="city-link">Hangzhou</a>
+                        </div>
+                    </div>
+                    <div class="province-cities" data-province="hubei">
+                        <h4>Cities in Hubei Province:</h4>
+                        <div class="city-links">
+                            <a href="wuhan.html" class="city-link">Wuhan</a>
+                        </div>
+                    </div>
+                    <div class="province-cities" data-province="hunan">
+                        <h4>Cities in Hunan Province:</h4>
+                        <div class="city-links">
+                            <a href="changsha.html" class="city-link">Changsha</a>
+                            <a href="fenghuang.html" class="city-link">Fenghuang</a>
+                            <a href="zhangjiajie.html" class="city-link">Zhangjiajie</a>
+                        </div>
+                    </div>
+                    <div class="province-cities" data-province="sichuan">
+                        <h4>Cities in Sichuan Province:</h4>
+                        <div class="city-links">
+                            <a href="chengdu.html" class="city-link">Chengdu</a>
+                            <a href="jiuzhaigou.html" class="city-link">Jiuzhaigou</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Map Section -->
+                <div class="map-section">
+                    <div class="map-container">
+                        <div id="china-map" style="width: 100%; height: 500px;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Culture Section -->
+        <section class="culture-section" id="culture">
+            <div class="section-title">
+                <h2>Chinese Culture</h2>
+            </div>
+            <div class="culture-content">
+                <div class="culture-text">
+                    <h3>Rich Cultural Heritage</h3>
+                    <p>China boasts a history spanning over 5,000 years, with a rich tapestry of traditions, art, and philosophy. From the ancient teachings of Confucius to the vibrant festivals that celebrate the lunar calendar, Chinese culture is both deep and diverse.</p>
+                    <p>Experience traditional Chinese cuisine, witness breathtaking performances of Peking Opera, and explore the intricate art of Chinese calligraphy and painting.</p>
+                </div>
+                <div class="culture-img">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Traditional%20Chinese%20cultural%20performance&image_size=landscape_16_9" alt="Chinese Culture">
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-top-section">
+                <h3>About Us</h3>
+                <p>Dynamic Tour is dedicated to providing authentic travel experiences in China, with expert guides and carefully crafted itineraries. Our guides are fluent in Indonesian, English and Chinese, so no language barriers!</p>
+                <p class="hassle-text">Hassle no more!</p>
+            </div>
+            <div class="footer-middle-bottom-row">
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: jeanet.djayat@qq.com</p>
+                    <p>Whatsapp: +62 81318838877</p>
+                    <p>Wechat: Zhou_1177</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="images/wechatbarcode.jpeg" class="social-link" title="WeChat QR Code" target="_blank">
+                            <img src="images/wechat.jpeg.png" alt="WeChat" width="20" height="20">
+                        </a>
+                        <a href="https://instagram.com/jeanet.eunice" class="social-link" title="Instagram" target="_blank">
+                            <img src="images/instagram.png" alt="Instagram" width="20" height="20">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Dynamic Tour. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/6281318838877" class="whatsapp-btn" target="_blank">
+        <img src="images/whatsapp.jpeg.png" alt="WhatsApp" width="40" height="40">
+    </a>
+
+
+
+    <script>
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        document.querySelectorAll('.nav-links a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const target = document.querySelector(targetId);
+                if (target) {
+                    const navbar = document.querySelector('.navbar');
+                    const navbarHeight = navbar ? navbar.offsetHeight : 0;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    if (history.pushState) {
+                        history.pushState(null, null, targetId);
+                    }
+                    const navLinks = document.querySelector('.nav-links');
+                    if (navLinks.classList.contains('active')) {
+                        navLinks.classList.remove('active');
+                    }
+                }
+            });
+        });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+            } else {
+                navbar.style.boxShadow = '0 2px 8px rgba(0,0,0,0.08)';
+            }
+        });
+
+        // Province buttons toggle functionality
+        document.querySelectorAll('.province-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const province = this.getAttribute('data-province');
+                const isActive = this.classList.contains('active');
+
+                document.querySelectorAll('.province-btn').forEach(b => {
+                    b.classList.remove('active');
+                });
+                document.querySelectorAll('.province-cities').forEach(cityDiv => {
+                    cityDiv.classList.remove('active');
+                });
+
+                if (!isActive) {
+                    this.classList.add('active');
+                    const targetCityDiv = document.querySelector(`.province-cities[data-province="${province}"]`);
+                    if (targetCityDiv) {
+                        targetCityDiv.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        // ECharts China Map initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            const chartDom = document.getElementById('china-map');
+            if (chartDom) {
+                const myChart = echarts.init(chartDom);
+                
+                const provinceCities = {
+                    '北京': { cities: ['Beijing'], desc: 'Capital of China' },
+                    '上海': { cities: ['Shanghai'], desc: 'Modern metropolis' },
+                    '江苏': { cities: ['Nanjing', 'Suzhou'], desc: 'Classical gardens & water towns' },
+                    '浙江': { cities: ['Hangzhou'], desc: 'West Lake paradise' },
+                    '湖北': { cities: ['Wuhan'], desc: 'City of cherry blossoms' },
+                    '湖南': { cities: ['Changsha', 'Fenghuang', 'Zhangjiajie'], desc: 'Avatar Mountains & ancient towns' },
+                    '四川': { cities: ['Chengdu', 'Jiuzhaigou'], desc: 'Pandas & fairyland lakes' },
+                    '重庆': { cities: ['Chongqing'], desc: 'Mountain city' }
+                };
+
+                const cityUrls = {
+                    'Beijing': 'beijing.html',
+                    'Shanghai': 'shanghai.html',
+                    'Nanjing': 'nanjing.html',
+                    'Suzhou': 'suzhou.html',
+                    'Hangzhou': 'hangzhou.html',
+                    'Wuhan': 'wuhan.html',
+                    'Changsha': 'changsha.html',
+                    'Fenghuang': 'fenghuang.html',
+                    'Zhangjiajie': 'zhangjiajie.html',
+                    'Chengdu': 'chengdu.html',
+                    'Jiuzhaigou': 'jiuzhaigou.html',
+                    'Chongqing': 'chongqing.html'
+                };
+
+                const cityImages = {
+                    'Beijing': 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Beijing%20Forbidden%20City%20imperial%20palace&image_size=landscape_16_9',
+                    'Shanghai': 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Shanghai%20skyline%20modern%20city&image_size=landscape_16_9',
+                    'Nanjing': 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nanjing%20ancient%20capital%20historical%20city&image_size=landscape_16_9',
+                    'Suzhou': 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20classical%20gardens%20traditional%20architecture&image_size=landscape_16_9',
+                    'Hangzhou': 'images/hangzhou.jpg',
+                    'Wuhan': 'https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Wuhan%20Yellow%20Crane%20Tower%20cherry%20blossoms&image_size=landscape_16_9',
+                    'Changsha': 'images/orangeisle.jpg',
+                    'Fenghuang': 'images/fenghuang.jpeg',
+                    'Zhangjiajie': 'images/zhangjiajie.jpg',
+                    'Chengdu': 'images/chengdu.jpg',
+                    'Jiuzhaigou': 'images/jiuzhaigou.jpg',
+                    'Chongqing': 'images/chongqing.jpg'
+                };
+
+                const mapData = [
+                    { name: '北京', value: 1, itemStyle: { areaColor: '#a5d6a7' } },
+                    { name: '上海', value: 1, itemStyle: { areaColor: '#a5d6a7' } },
+                    { name: '江苏', value: 2, itemStyle: { areaColor: '#66bb6a' } },
+                    { name: '浙江', value: 1, itemStyle: { areaColor: '#a5d6a7' } },
+                    { name: '湖北', value: 1, itemStyle: { areaColor: '#a5d6a7' } },
+                    { name: '湖南', value: 3, itemStyle: { areaColor: '#43a047' } },
+                    { name: '四川', value: 2, itemStyle: { areaColor: '#66bb6a' } },
+                    { name: '重庆', value: 1, itemStyle: { areaColor: '#a5d6a7' } }
+                ];
+
+                const cityData = [
+                    { name: 'Beijing', value: [116.46, 39.92], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Shanghai', value: [121.48, 31.22], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Nanjing', value: [118.78, 32.04], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Suzhou', value: [120.62, 31.32], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Hangzhou', value: [120.19, 30.26], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Wuhan', value: [114.31, 30.52], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Changsha', value: [112.94, 28.23], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Fenghuang', value: [109.62, 27.95], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Zhangjiajie', value: [110.47, 29.12], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Chengdu', value: [104.06, 30.67], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Jiuzhaigou', value: [103.92, 33.25], itemStyle: { color: '#ff6b35' } },
+                    { name: 'Chongqing', value: [106.54, 29.59], itemStyle: { color: '#ff6b35' } }
+                ];
+
+                const option = {
+                    backgroundColor: '#f5f9f5',
+                    title: {
+                        text: 'Explore Our Destinations',
+                        subtext: 'Hover over provinces and cities to explore',
+                        left: 'center',
+                        top: 10,
+                        textStyle: {
+                            color: '#2c5aa0',
+                            fontSize: 20,
+                            fontWeight: 'bold'
+                        },
+                        subtextStyle: {
+                            color: '#666',
+                            fontSize: 12
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item',
+                        enterable: true,
+                        backgroundColor: 'rgba(255,255,255,0.98)',
+                        borderColor: '#ddd',
+                        borderWidth: 1,
+                        padding: 0,
+                        textStyle: {
+                            color: '#333'
+                        },
+                        formatter: function(params) {
+                            if (params.seriesType === 'scatter') {
+                                const cityName = params.name;
+                                const img = cityImages[cityName] || '';
+                                const url = cityUrls[cityName] || '#';
+                                return `<div style="width: 220px; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.15);">
+                                    <div style="height: 120px; overflow: hidden;">
+                                        <img src="${img}" style="width: 100%; height: 100%; object-fit: cover;" alt="${cityName}"/>
+                                    </div>
+                                    <div style="padding: 12px; background: white;">
+                                        <div style="font-weight: bold; font-size: 14px; color: #2c5aa0; margin-bottom: 4px;">${cityName}</div>
+                                        <div style="font-size: 11px; color: #666; margin-bottom: 8px;">Click to explore this city</div>
+                                        <a href="${url}" style="display: inline-block; padding: 6px 16px; background: #ff6b35; color: white; text-decoration: none; border-radius: 20px; font-size: 12px; font-weight: bold;">Visit Page →</a>
+                                    </div>
+                                </div>`;
+                            } else {
+                                const provinceName = params.name;
+                                const englishName = {
+                                    '北京': 'Beijing', '上海': 'Shanghai', '江苏': 'Jiangsu',
+                                    '浙江': 'Zhejiang', '湖北': 'Hubei', '湖南': 'Hunan',
+                                    '四川': 'Sichuan', '重庆': 'Chongqing'
+                                }[provinceName] || provinceName;
+                                
+                                if (provinceCities[provinceName]) {
+                                    const cities = provinceCities[provinceName].cities;
+                                    const desc = provinceCities[provinceName].desc;
+                                    return `<div style="padding: 12px; min-width: 180px;">
+                                        <div style="font-weight: bold; font-size: 15px; color: #2c5aa0; margin-bottom: 6px;">${englishName}</div>
+                                        <div style="font-size: 12px; color: #666; margin-bottom: 10px;">${desc}</div>
+                                        <div style="font-size: 12px; color: #333;">
+                                            <strong style="color: #ff6b35;">Cities (${cities.length}):</strong><br/>
+                                            <div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 6px;">
+                                                ${cities.map(city => 
+                                                    `<span style="display: inline-block; padding: 4px 10px; background: #e6f0ff; border-radius: 4px; font-size: 11px; color: #2c5aa0; cursor: pointer;" 
+                                                      onclick="window.location.href='${cityUrls[city]}'">${city}</span>`
+                                                ).join('')}
+                                            </div>
+                                        </div>
+                                    </div>`;
+                                }
+                                return params.name;
+                            }
+                        }
+                    },
+                    geo: {
+                        map: 'china',
+                        roam: true,
+                        zoom: 1.3,
+                        center: [105, 36],
+                        scaleLimit: {
+                            min: 1,
+                            max: 3
+                        },
+                        label: {
+                            show: true,
+                            fontSize: 10,
+                            color: '#555'
+                        },
+                        emphasis: {
+                            label: {
+                                show: true,
+                                fontSize: 12,
+                                fontWeight: 'bold',
+                                color: '#fff'
+                            },
+                            itemStyle: {
+                                areaColor: '#2c5aa0',
+                                borderColor: '#fff',
+                                borderWidth: 2,
+                                shadowBlur: 20,
+                                shadowColor: 'rgba(0,0,0,0.3)'
+                            }
+                        },
+                        itemStyle: {
+                            borderColor: '#fff',
+                            borderWidth: 1,
+                            areaColor: '#f0f0f0'
+                        }
+                    },
+                    series: [
+                        {
+                            name: 'Provinces',
+                            type: 'map',
+                            map: 'china',
+                            geoIndex: 0,
+                            data: mapData
+                        },
+                        {
+                            name: 'Cities',
+                            type: 'scatter',
+                            coordinateSystem: 'geo',
+                            data: cityData,
+                            symbolSize: 12,
+                            symbol: 'circle',
+                            label: {
+                                show: true,
+                                position: 'right',
+                                formatter: '{b}',
+                                fontSize: 10,
+                                fontWeight: 'bold',
+                                color: '#333',
+                                textBorderColor: '#fff',
+                                textBorderWidth: 2
+                            },
+                            emphasis: {
+                                label: {
+                                    show: true,
+                                    fontSize: 12,
+                                    fontWeight: 'bold',
+                                    color: '#ff6b35'
+                                },
+                                itemStyle: {
+                                    color: '#ff6b35',
+                                    borderColor: '#fff',
+                                    borderWidth: 3,
+                                    shadowBlur: 15,
+                                    shadowColor: 'rgba(255,107,53,0.6)'
+                                },
+                                scale: 1.3
+                            },
+                            itemStyle: {
+                                borderColor: '#fff',
+                                borderWidth: 2,
+                                shadowBlur: 8,
+                                shadowColor: 'rgba(255,107,53,0.4)'
+                            },
+                            rippleEffect: {
+                                brushType: 'stroke',
+                                scale: 3
+                            }
+                        }
+                    ]
+                };
+
+                myChart.setOption(option);
+
+                myChart.on('click', function(params) {
+                    if (params.seriesType === 'scatter') {
+                        const cityName = params.name;
+                        if (cityUrls[cityName]) {
+                            window.location.href = cityUrls[cityName];
+                        }
+                    } else if (params.componentType === 'series') {
+                        const provinceName = params.name;
+                        if (provinceCities[provinceName]) {
+                            const cities = provinceCities[provinceName].cities;
+                            if (cities.length === 1) {
+                                window.location.href = cityUrls[cities[0]];
+                            }
+                        }
+                    }
+                });
+
+                window.addEventListener('resize', function() {
+                    myChart.resize();
+                });
+            }
+        });
+
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Fenghuang - Dynamic Tour</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea, select {
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.8rem 2rem 0.8rem 1.2rem;
+            gap: 0;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 100px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            margin-left: auto;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s;
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .menu-btn {
+            display: none;
+            font-size: 1.4rem;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .menu-btn:hover {
+            background-color: var(--gray);
+        }
+
+        /* Mobile Responsive Navbar */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: white;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                gap: 1rem;
+                z-index: 999;
+                border-top: 2px solid var(--primary-light);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .logo-img {
+                height: 80px;
+            }
+            .logo-text {
+                font-size: 1.4rem;
+            }
+            .logo-container {
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-img {
+                height: 65px;
+            }
+            .nav-container {
+                padding: 0.6rem 0.8rem;
+            }
+            .nav-links {
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* Banner */
+        .banner {
+            height: clamp(250px, 50vw, 500px);
+            background: linear-gradient(rgba(15,48,87,0.6), rgba(15,48,87,0.7)),
+                        url('images/fenghuang.jpeg') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+        }
+        .banner h1 {
+            font-size: clamp(1.8rem, 6vw, 3.4rem);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        .banner p {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            max-width: 90%;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-title h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-title p {
+            color: var(--dark);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* Visit Time Section */
+        .visit-time {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .visit-time-content h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .visit-time-content p {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .visit-time-content strong {
+            color: var(--accent);
+        }
+
+        /* Attraction Sections */
+        .attraction {
+            margin-bottom: 3rem;
+        }
+        .attraction-content {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .attraction-img {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .attraction-img img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+        .attraction-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .attraction-text h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .attraction-text p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Mobile optimization for attractions */
+        @media (max-width: 768px) {
+            .attraction-content {
+                flex-direction: column;
+            }
+            .attraction-img {
+                order: 1;
+                width: 100%;
+            }
+            .attraction-text {
+                order: 2;
+                width: 100%;
+            }
+            .attraction {
+                margin-bottom: 2rem;
+            }
+            .attraction-text p {
+                margin-bottom: 0.6rem;
+                line-height: 1.5;
+            }
+            .attraction-text h3 {
+                margin-bottom: 0.8rem;
+            }
+            .visit-time {
+                padding: 1.2rem;
+                margin: 1.5rem 0;
+            }
+            .visit-time-content h3 {
+                font-size: 1.3rem;
+            }
+            .visit-time-content p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Food Section */
+        .food-section {
+            margin-top: 4rem;
+        }
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .food-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .food-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        .food-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .food-card:hover .food-img img {
+            transform: scale(1.05);
+        }
+        .food-content {
+            padding: 1.5rem;
+        }
+        .food-content h4 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .food-content p {
+            color: var(--dark);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 1rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-top-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .footer-top-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-top-section p {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .hassle-text {
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.5rem;
+        }
+        .footer-middle-section,
+        .footer-bottom-section {
+            display: flex;
+            justify-content: center;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .footer-middle-bottom-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        .footer-section {
+            min-width: 250px;
+            text-align: center;
+        }
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .footer-section a:hover {
+            color: var(--accent);
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            transition: background 0.3s;
+        }
+        .social-link:hover {
+            background: var(--accent);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            color: rgba(255,255,255,0.6);
+            font-size: 0.9rem;
+        }
+
+        /* Next Destination Section */
+        .next-destination {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+        .next-destination-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .next-destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .next-destination-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .next-destination-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .next-destination-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .next-destination-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        .next-destination-content {
+            display: flex;
+            padding: 1.5rem;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .next-destination-img {
+            flex-shrink: 0;
+            width: 280px;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .next-destination-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .next-destination-card:hover .next-destination-img img {
+            transform: scale(1.05);
+        }
+        .next-destination-text {
+            flex: 1;
+        }
+        .next-destination-text h4 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+        .next-destination-text p {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .next-destination-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .next-destination-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15,48,87,0.3);
+        }
+        .next-destination-btn::after {
+            content: ' →';
+        }
+
+        @media (max-width: 768px) {
+            .next-destination-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .next-destination-img {
+                width: 100%;
+                height: 200px;
+            }
+            .next-destination-header h3 {
+                font-size: 1.2rem;
+            }
+            .next-destination-text h4 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .next-destination {
+                margin: 2rem auto;
+            }
+            .next-destination-content {
+                padding: 1rem;
+            }
+            .next-destination-img {
+                height: 160px;
+            }
+        }
+        
+        
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour Logo" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links" id="navLinks">
+                <a href="index.html">Home</a>
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Culture</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <section class="banner">
+        <h1>Fenghuang Ancient Town</h1>
+        <p>Discover the Magic of China's Most Beautiful Ancient Water Town</p>
+    </section>
+
+    <main class="main-content">
+        <!-- Introduction -->
+        <section class="section-title">
+            <h2>Discover Fenghuang</h2>
+            <p>Fenghuang Ancient Town, also known as Phoenix Ancient Town, is a well-preserved historic town located in western Hunan Province. Built on the banks of the Tuojiang River, this picturesque town features traditional wooden stilt houses, stone bridges, and winding cobblestone streets that create a charming atmosphere from another era. Founded during the Ming Dynasty and flourishing in the Qing Dynasty, Fenghuang was once an important trading center on the ancient tea and salt route.</p>
+        </section>
+
+        <!-- Visit Time Section -->
+        <section class="visit-time">
+            <div class="visit-time-content">
+                <h3>Suggested Visit Time</h3>
+                <p><strong>Recommended Duration:</strong> 2-3 days</p>
+                <p><strong>Best Time to Visit:</strong> March to May (spring) and September to November (autumn) when the weather is mild and comfortable. Avoid summer heat and winter cold.</p>
+            </div>
+        </section>
+
+        <!-- Tuojiang River & Stilt Houses -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/Tuojiang River & Stilt Houses.jpg" alt="Tuojiang River">
+                </div>
+                <div class="attraction-text">
+                    <h3>Tuojiang River & Stilt Houses</h3>
+                    <p>The Tuojiang River is the heart of Fenghuang Ancient Town, with traditional wooden stilt houses built along its banks, foundations resting on stilts in the water.</p>
+                    <p>Visitors can take a leisurely bamboo raft ride down the river, passing under ancient stone bridges. The river is especially magical at night with thousands of red lanterns.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Hongqiao (Rainbow Bridge) -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="https://images.unsplash.com/photo-1528127269322-539801943592?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&h=630&q=80" alt="Hongqiao">
+                </div>
+                <div class="attraction-text">
+                    <h3>Hongqiao (Rainbow Bridge)</h3>
+                    <p>Hongqiao is one of Fenghuang's most iconic landmarks, a beautiful wooden covered bridge spanning the Tuojiang River, built during the Ming Dynasty.</p>
+                    <p>The bridge's upper level houses a tea house and shops, while the lower level offers stunning views of the river and surrounding stilt houses.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wanshou Palace -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/wanshou palace.jpg" alt="Wanshou Palace">
+                </div>
+                <div class="attraction-text">
+                    <h3>Wanshou Palace</h3>
+                    <p>Wanshou Palace, or the Palace of Longevity, is an important historical site built during the Qing Dynasty, dedicated to the local patron saint Yang Zaosi.</p>
+                    <p>Visitors can explore the temple halls, admire the ancient wooden architecture, and learn about Fenghuang's religious and cultural history.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Shen Congwen Former Residence -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/SHENCONGWEN.jpg" alt="Shen Congwen Former Residence">
+                </div>
+                <div class="attraction-text">
+                    <h3>Shen Congwen Former Residence</h3>
+                    <p>A memorial museum dedicated to China's celebrated modern writer Shen Congwen, whose works like "Border Town" brought fame to Fenghuang.</p>
+                    <p>The traditional wooden courtyard house has been preserved, showcasing personal belongings, manuscripts, and insights into the author's life.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wanming Pagoda -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/wanming pagoda.png" alt="Wanming Pagoda">
+                </div>
+                <div class="attraction-text">
+                    <h3>Wanming Pagoda</h3>
+                    <p>Wanming Pagoda is a beautiful seven-story pagoda on the banks of the Tuojiang River, an iconic landmark originally built during the Qing Dynasty.</p>
+                    <p>Visitors can climb the pagoda's narrow stairs to enjoy panoramic views of the river, stilt houses, and surrounding mountains.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Local Food -->
+        <section class="food-section">
+            <div class="section-title">
+                <h2>Local Food</h2>
+                <p>Fenghuang offers a delicious blend of Hunan and Miao ethnic cuisine, featuring bold flavors, fresh local ingredients, and unique cooking methods.</p>
+            </div>
+            <div class="food-grid">
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="images/XUETAOCAI.jpg" alt="Xue Tao Cai">
+                    </div>
+                    <div class="food-content">
+                        <h4>Xue Tao Cai (Blood Cake)</h4>
+                        <p>A traditional Miao and Tujia ethnic delicacy made from glutinous rice, pork, and pig blood, steamed with various seasonings.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="images/miao sour soup.jpg" alt="Miao Sour Soup">
+                    </div>
+                    <div class="food-content">
+                        <h4>Miao Sour Soup</h4>
+                        <p>A signature dish made with fermented rice or tomatoes, creating a tangy broth with fish, meat, or vegetables.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="images/smoked pork with wild vegetables.jpg" alt="Smoked Pork">
+                    </div>
+                    <div class="food-content">
+                        <h4>Smoked Pork with Wild Vegetables</h4>
+                        <p>Traditional smoked pork cured over wood fires, stir-fried with wild mountain vegetables like bracken fern or bamboo shoots.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="images/fenghuang rice noodles.png" alt="Rice Noodles">
+                    </div>
+                    <div class="food-content">
+                        <h4>Fenghuang Rice Noodles</h4>
+                        <p>Popular breakfast and street food served in a flavorful broth with braised pork, pickled vegetables, peanuts, and fresh herbs.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Next Destination Section -->
+    <section class="next-destination">
+        <a href="zhangjiajie.html" class="next-destination-link">
+            <div class="next-destination-card">
+                <div class="next-destination-header">
+                    <h3>What's on Next Page</h3>
+                    <p>Continue exploring China with your next destination</p>
+                </div>
+                <div class="next-destination-content">
+                    <div class="next-destination-img">
+                        <img src="images/zhangjiajie.jpg" alt="Zhangjiajie">
+                    </div>
+                    <div class="next-destination-text">
+                        <h4>Zhangjiajie</h4>
+                        <p>The real Avatar Mountains with thousands of towering quartz sandstone pillars, glass bridges, and breathtaking natural scenery. Explore the surreal landscape that inspired the floating mountains in the film Avatar.</p>
+                        <span class="next-destination-btn">Explore Zhangjiajie</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </section>
+
+    <!-- Footer -->
+<footer id="contact">
+    <div class="footer-content">
+        <div class="footer-top-section">
+            <h3>About Us</h3>
+            <p>Dynamic Tour is dedicated to providing authentic travel experiences in China, with expert guides and carefully crafted itineraries. Our guides are fluent in Indonesian, English and Chinese, so no language barriers!</p>
+            <p class="hassle-text">Hassle no more!</p>
+        </div>
+        <div class="footer-middle-bottom-row">
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: jeanet.djayat@qq.com</p>
+                <p>Whatsapp: +62 81318838877</p>
+                <p>Wechat: Zhou_1177</p>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="images/wechatbarcode.jpeg" class="social-link" title="WeChat QR Code" target="_blank">
+                        <img src="images/wechat.jpeg.png" alt="WeChat" width="20" height="20">
+                    </a>
+                    <a href="https://instagram.com/jeanet.eunice" class="social-link" title="Instagram" target="_blank">
+                        <img src="images/instagram.png" alt="Instagram" width="20" height="20">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Dynamic Tour. All rights reserved.</p>
+    </div>
+</footer>
+
+<!-- WhatsApp Button -->
+<a href="https://wa.me/6281318838877" class="whatsapp-btn" target="_blank">
+    <img src="images/whatsapp.jpeg.png" alt="WhatsApp" width="40" height="40">
+</a>
+
+
+
+<script>
+    // Mobile menu toggle
+    function toggleMenu() {
+        const navLinks = document.querySelector('.nav-links');
+        navLinks.classList.toggle('active');
+    }
+</script>
+</body>
+</html>

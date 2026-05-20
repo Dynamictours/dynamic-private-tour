@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Suzhou - Dynamic Tour</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        input, textarea, select {
+            font-size: 16px;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            padding: 0.8rem 2rem 0.8rem 1.2rem;
+            gap: 0;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 100px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+            margin-left: auto;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s;
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .menu-btn {
+            display: none;
+            font-size: 1.4rem;
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: background-color 0.2s;
+        }
+        .menu-btn:hover {
+            background-color: var(--gray);
+        }
+
+        /* Mobile Responsive Navbar */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                background: white;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                padding: 1rem 2rem;
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+                gap: 1rem;
+                z-index: 999;
+                border-top: 2px solid var(--primary-light);
+            }
+            .nav-links.active {
+                display: flex;
+            }
+            .menu-btn {
+                display: block;
+            }
+            .logo-img {
+                height: 80px;
+            }
+            .logo-text {
+                font-size: 1.4rem;
+            }
+            .logo-container {
+                gap: 0.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-img {
+                height: 65px;
+            }
+            .nav-container {
+                padding: 0.6rem 0.8rem;
+            }
+            .nav-links {
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        /* Banner */
+        .banner {
+            height: clamp(250px, 50vw, 500px);
+            background: linear-gradient(rgba(15,48,87,0.6), rgba(15,48,87,0.7)),
+                        url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20classical%20garden%20traditional%20architecture&image_size=landscape_16_9') center/cover no-repeat;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            background-color: var(--primary);
+        }
+        .banner h1 {
+            font-size: clamp(1.8rem, 6vw, 3.4rem);
+            margin-bottom: 0.8rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            line-height: 1.2;
+        }
+        .banner p {
+            font-size: clamp(0.9rem, 3vw, 1.2rem);
+            max-width: 90%;
+            opacity: 0.95;
+            line-height: 1.5;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 2rem 1rem;
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        /* Section Title */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        .section-title h2 {
+            color: var(--primary);
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .section-title p {
+            color: var(--dark);
+            max-width: 800px;
+            margin: auto;
+        }
+
+        /* Visit Time Section */
+        .visit-time {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        .visit-time-content h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .visit-time-content p {
+            margin-bottom: 0.5rem;
+            line-height: 1.5;
+        }
+        .visit-time-content strong {
+            color: var(--accent);
+        }
+
+        /* Attraction Sections */
+        .attraction {
+            margin-bottom: 3rem;
+        }
+        .attraction-content {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .attraction-img {
+            flex: 1;
+            min-width: 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+        .attraction-img img {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+            display: block;
+        }
+        .attraction-text {
+            flex: 1;
+            min-width: 300px;
+        }
+        .attraction-text h3 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        .attraction-text p {
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        /* Mobile optimization for attractions */
+        @media (max-width: 768px) {
+            .attraction-content {
+                flex-direction: column;
+            }
+            .attraction-img {
+                order: 1;
+                width: 100%;
+            }
+            .attraction-text {
+                order: 2;
+                width: 100%;
+            }
+            .attraction {
+                margin-bottom: 2rem;
+            }
+            .attraction-text p {
+                margin-bottom: 0.6rem;
+                line-height: 1.5;
+            }
+            .attraction-text h3 {
+                margin-bottom: 0.8rem;
+            }
+            .visit-time {
+                padding: 1.2rem;
+                margin: 1.5rem 0;
+            }
+            .visit-time-content h3 {
+                font-size: 1.3rem;
+            }
+            .visit-time-content p {
+                font-size: 0.9rem;
+            }
+        }
+
+        /* Food Section */
+        .food-section {
+            margin-top: 4rem;
+        }
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        .food-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .food-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .food-img {
+            height: 200px;
+            overflow: hidden;
+        }
+        .food-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .food-card:hover .food-img img {
+            transform: scale(1.05);
+        }
+        .food-content {
+            padding: 1.5rem;
+        }
+        .food-content h4 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        .food-content p {
+            color: var(--dark);
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 1rem 1rem;
+            margin-top: 3rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        .footer-top-section {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .footer-top-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-top-section p {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .hassle-text {
+            font-weight: 600;
+            color: var(--accent);
+            margin-top: 0.5rem;
+        }
+        .footer-middle-bottom-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 800px;
+            margin: 0 auto;
+            gap: 2rem;
+        }
+        .footer-section {
+            min-width: 250px;
+            text-align: center;
+            width: 100%;
+        }
+        .footer-section h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: var(--accent);
+        }
+        .footer-section p,
+        .footer-section a {
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            line-height: 1.6;
+        }
+        .footer-section a:hover {
+            color: white;
+        }
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.5rem;
+            justify-content: center;
+        }
+        .social-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+        .social-link:hover {
+            transform: translateY(-3px);
+            background: var(--accent);
+        }
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+        }
+
+        /* WhatsApp Button */
+        .whatsapp-btn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #25D366;
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s;
+            z-index: 998;
+        }
+        .whatsapp-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 6px 16px rgba(37, 211, 102, 0.4);
+        }
+        .whatsapp-btn img {
+            filter: brightness(0) invert(1);
+        }
+
+        /* Mobile optimization for WhatsApp button */
+        @media (max-width: 480px) {
+            .whatsapp-btn {
+                width: 50px;
+                height: 50px;
+                bottom: 1.5rem;
+                right: 1.5rem;
+            }
+        }
+
+        /* Next Destination Section */
+        .next-destination {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 1rem;
+        }
+        .next-destination-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .next-destination-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+        .next-destination-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+        .next-destination-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+        }
+        .next-destination-header h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .next-destination-header p {
+            font-size: 1rem;
+            opacity: 0.9;
+            font-weight: 500;
+        }
+        .next-destination-content {
+            display: flex;
+            padding: 1.5rem;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        .next-destination-img {
+            flex-shrink: 0;
+            width: 280px;
+            height: 180px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .next-destination-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        .next-destination-card:hover .next-destination-img img {
+            transform: scale(1.05);
+        }
+        .next-destination-text {
+            flex: 1;
+        }
+        .next-destination-text h4 {
+            font-size: 1.5rem;
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+        }
+        .next-destination-text p {
+            color: var(--dark);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .next-destination-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+        .next-destination-btn:hover {
+            background: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(15,48,87,0.3);
+        }
+        .next-destination-btn::after {
+            content: ' →';
+        }
+
+        @media (max-width: 768px) {
+            .next-destination-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            .next-destination-img {
+                width: 100%;
+                height: 200px;
+            }
+            .next-destination-header h3 {
+                font-size: 1.2rem;
+            }
+            .next-destination-text h4 {
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .next-destination {
+                margin: 2rem auto;
+            }
+            .next-destination-content {
+                padding: 1rem;
+            }
+            .next-destination-img {
+                height: 160px;
+            }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 1.5rem 1rem;
+            }
+            .attraction-content {
+                flex-direction: column;
+            }
+            .attraction-img,
+            .attraction-text {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour Logo" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#home">Home</a>
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Culture</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <button class="menu-btn" onclick="toggleMenu()">☰</button>
+        </div>
+    </nav>
+
+    <!-- Banner -->
+    <div class="banner" id="home">
+        <h1>Suzhou</h1>
+        <p>Explore the "Venice of the East" with its classical gardens and traditional water towns</p>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Introduction -->
+        <section class="section-title">
+            <h2>Discover Suzhou</h2>
+            <p>Suzhou, located in Jiangsu Province, is known as the "Venice of the East" for its extensive canal system and classical gardens. With a history dating back over 2,500 years, it's a city that preserves traditional Chinese architecture and culture while embracing modern development.</p>
+        </section>
+        
+        <!-- Suggested Visit Time -->
+        <section class="visit-time">
+            <div class="visit-time-content">
+                <h3>Suggested Visit Time</h3>
+                <p><strong>Recommended Duration:</strong> 2-3 days</p>
+                <p><strong>Best Time to Visit:</strong> March to May (spring) when the gardens are in bloom, or September to November (autumn) when the weather is mild and comfortable.</p>
+            </div>
+        </section>
+
+        <!-- Humble Administrator's Garden -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Humble%20Administrator's%20Garden%20Suzhou%20classical%20garden&image_size=landscape_16_9" alt="Humble Administrator's Garden">
+                </div>
+                <div class="attraction-text">
+                    <h3>Humble Administrator's Garden</h3>
+                    <p>The Humble Administrator's Garden is the largest and most famous classical garden in Suzhou. Built in the 16th century during the Ming Dynasty, it's a UNESCO World Heritage site known for its beautiful pavilions, ponds, rockeries, and meticulously designed landscapes.</p>
+                    <p>The garden is divided into three sections: the eastern, central, and western sections. Each section has its own unique features, but all showcase the traditional Chinese gardening philosophy of harmonizing with nature. It's a perfect place to experience traditional Chinese garden design.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tiger Hill -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Tiger%20Hill%20Suzhou%20Yunyan%20Pagoda&image_size=landscape_16_9" alt="Tiger Hill">
+                </div>
+                <div class="attraction-text">
+                    <h3>Tiger Hill</h3>
+                    <p>Tiger Hill is a scenic hill located northwest of Suzhou's old town. It's known for its beautiful scenery, historical sites, and the iconic Yunyan Pagoda, which leans like the Leaning Tower of Pisa.</p>
+                    <p>The hill has a history dating back over 2,500 years and is associated with the legend of King Helü of Wu. Visitors can explore the pagoda, ancient stone carvings, and beautiful gardens while enjoying panoramic views of Suzhou from the top of the hill.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Panmen Scenic Area -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/panmen.jpg" alt="Panmen Scenic Area">
+                </div>
+                <div class="attraction-text">
+                    <h3>Panmen Scenic Area</h3>
+                    <p>Panmen Scenic Area is one of the most important historical sites in Suzhou, featuring the ancient Panmen Gate, one of the few remaining city gates from the Spring and Autumn Period (770-476 BC). The area also includes the Ruiguang Pagoda, one of Suzhou's oldest pagodas.</p>
+                    <p>Visitors can explore the ancient city walls, enjoy the beautiful gardens, and take boat rides along the moat. The scenic area offers a unique combination of historical relics and natural beauty, making it a must-visit attraction in Suzhou.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Jinji Lake -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Jinji%20Lake%20Suzhou%20modern%20skyline&image_size=landscape_16_9" alt="Jinji Lake">
+                </div>
+                <div class="attraction-text">
+                    <h3>Jinji Lake</h3>
+                    <p>Jinji Lake is a large artificial lake located in Suzhou Industrial Park, showcasing the modern side of the city. Surrounded by skyscrapers, shopping malls, and entertainment venues, it's a popular destination for both locals and tourists.</p>
+                    <p>Visitors can enjoy boat rides on the lake, stroll along the scenic waterfront, or visit attractions like the Ferris wheel and the Suzhou Culture and Arts Center. The lake is especially beautiful at night when the surrounding buildings are lit up.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Qilishantang (七里山塘) -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="images/qilishitang.jpg" alt="Qilishantang">
+                </div>
+                <div class="attraction-text">
+                    <h3>Qilishantang (七里山塘)</h3>
+                    <p>Qilishantang, also known as Shantang Street, is a historic water street located in the old town of Suzhou. Stretching for about 3.5 kilometers (hence the name "Qilishan" which means "seven li"), it's one of the oldest and most well-preserved streets in the city.</p>
+                    <p>Originally built in the Tang Dynasty (618-907 AD) by the famous poet Bai Juyi, Qilishantang features traditional architecture, canals, and stone bridges. Today, it's a popular pedestrian street lined with shops, restaurants, and historical sites, offering a glimpse into Suzhou's traditional way of life.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pingjiang Road -->
+        <section class="attraction">
+            <div class="attraction-content">
+                <div class="attraction-img">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Pingjiang%20Road%20Suzhou%20traditional%20street&image_size=landscape_16_9" alt="Pingjiang Road">
+                </div>
+                <div class="attraction-text">
+                    <h3>Pingjiang Road</h3>
+                    <p>Pingjiang Road is a historic street in Suzhou's old town. It runs parallel to the Pingjiang River and is lined with traditional houses, shops, and restaurants. It's a popular place to experience traditional Suzhou culture and cuisine.</p>
+                    <p>The street has a history dating back over 800 years and preserves the traditional water town architecture of Suzhou. Visitors can walk along the street, explore local shops, and enjoy traditional Suzhou snacks and dishes. It's a great place to experience the charm of old Suzhou.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Local Food -->
+        <section class="food-section">
+            <div class="section-title">
+                <h2>Local Food</h2>
+                <p>Suzhou cuisine, also known as Su cuisine, is one of the eight major cuisines in China. It's known for its sweet flavors, delicate presentation, and use of fresh ingredients. Many dishes feature freshwater fish and seafood from the nearby rivers and lakes.</p>
+            </div>
+            <div class="food-grid">
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20style%20mooncakes%20local%20pastry&image_size=landscape_16_9" alt="Suzhou-style Mooncakes">
+                    </div>
+                    <div class="food-content">
+                        <h4>Suzhou-style Mooncakes</h4>
+                        <p>Suzhou-style mooncakes are known for their flaky crust and sweet fillings, often made with red bean paste or lotus seed paste. They're a popular treat during the Mid-Autumn Festival and throughout the year.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Sweet%20and%20sour%20mandarin%20fish%20Suzhou%20cuisine&image_size=landscape_16_9" alt="Sweet and Sour Mandarin Fish">
+                    </div>
+                    <div class="food-content">
+                        <h4>Sweet and Sour Mandarin Fish</h4>
+                        <p>This dish features fresh mandarin fish cooked with a sweet and sour sauce. The fish is often served with its bones removed, making it easy to eat. It's a signature dish of Suzhou cuisine.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20noodles%20local%20food&image_size=landscape_16_9" alt="Suzhou Noodles">
+                    </div>
+                    <div class="food-content">
+                        <h4>Suzhou Noodles</h4>
+                        <p>Suzhou-style noodles are typically served in a clear broth with various toppings, such as braised pork, bamboo shoots, and pickles. They're a popular breakfast dish in Suzhou.</p>
+                    </div>
+                </div>
+                <div class="food-card">
+                    <div class="food-img">
+                        <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20sticky%20rice%20dumplings%20local%20snack&image_size=landscape_16_9" alt="Sticky Rice Dumplings">
+                    </div>
+                    <div class="food-content">
+                        <h4>Sticky Rice Dumplings</h4>
+                        <p>These dumplings are made with glutinous rice and various fillings, such as red bean paste or meat. They're often wrapped in bamboo leaves and steamed, making them a popular snack in Suzhou.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Next Destination Section -->
+    <section class="next-destination">
+        <a href="wuhan.html" class="next-destination-link">
+            <div class="next-destination-card">
+                <div class="next-destination-header">
+                    <h3>What's on Next Page</h3>
+                    <p>Continue exploring China with your next destination</p>
+                </div>
+                <div class="next-destination-content">
+                    <div class="next-destination-img">
+                        <img src="images/waitan.jpeg" alt="Wuhan">
+                    </div>
+                    <div class="next-destination-text">
+                        <h4>Wuhan</h4>
+                        <p>Known as the "City of Sakura" for its stunning cherry blossoms in spring, Wuhan is located at the confluence of the Yangtze and Han Rivers, and is a major cultural and economic center with a rich history.</p>
+                        <span class="next-destination-btn">Explore Wuhan</span>
+                    </div>
+                </div>
+            </div>
+        </a>
+    </section>
+
+    <!-- Footer -->
+    <footer id="contact">
+        <div class="footer-content">
+            <div class="footer-top-section">
+                <h3>About Us</h3>
+                <p>Dynamic Tour is dedicated to providing authentic travel experiences in China, with expert guides and carefully crafted itineraries. Our guides are fluent in Indonesian, English and Chinese, so no language barriers!</p>
+                <p class="hassle-text">Hassle no more!</p>
+            </div>
+            <div class="footer-middle-bottom-row">
+                <div class="footer-section">
+                    <h3>Contact</h3>
+                    <p>Email: jeanet.djayat@qq.com</p>
+                    <p>Whatsapp: +62 81318838877</p>
+                    <p>Wechat: Zhou_1177</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="images/wechatbarcode.jpeg" class="social-link" title="WeChat QR Code" target="_blank">
+                            <img src="images/wechat.jpeg.png" alt="WeChat" width="20" height="20">
+                        </a>
+                        <a href="https://instagram.com/jeanet.eunice" class="social-link" title="Instagram" target="_blank">
+                            <img src="images/instagram.png" alt="Instagram" width="20" height="20">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Dynamic Tour. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Button -->
+    <a href="https://wa.me/6281318838877" class="whatsapp-btn" target="_blank">
+        <img src="images/whatsapp.jpeg.png" alt="WhatsApp" width="40" height="40">
+    </a>
+
+
+
+    <script>
+        // Mobile menu toggle
+        function toggleMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            navLinks.classList.toggle('active');
+        }
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+
+    </script>
+</body>
+</html>
