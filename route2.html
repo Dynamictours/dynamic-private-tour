@@ -96,6 +96,7 @@
         .nav-links {
             display: flex;
             gap: 1.8rem;
+            margin-left: auto;
         }
         .nav-links a {
             color: var(--primary);
@@ -113,7 +114,7 @@
         }
 
         .route-banner {
-            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+            background: linear-gradient(135deg, rgba(45, 80, 22, 0.6) 0%, rgba(74, 124, 35, 0.6) 100%), url('https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=China%20travel%20collage%20Wuhan%20Yellow%20Crane%20Tower%20Changsha%20Orange%20Island%20Zhangjiajie%20Avatar%20Mountains%20Fenghuang%20Ancient%20Town%20Chengdu%20Pandas%20beautiful%20landscape&image_size=landscape_16_9') center/cover;
             color: white;
             padding: 4rem 2rem;
             text-align: center;
@@ -254,7 +255,6 @@
             width: 24px;
             height: 24px;
             background: var(--accent);
-            border: 4px solid var(--primary);
             border-radius: 50%;
             z-index: 1;
         }
@@ -558,7 +558,6 @@
             </a>
             <div class="nav-links">
                 <a href="index.html#destinations">Destinations</a>
-                <a href="index.html#culture">Chinese Culture</a>
                 <a href="index.html#map-section">China Map</a>
                 <a href="index.html#contact">Contact</a>
             </div>
@@ -647,7 +646,7 @@
                         <div class="travel-info">
                             <h4>🚄 From Wuhan to Fenghuang</h4>
                             <ul>
-                                <li><span class="transport-icon">🚄</span>High-Speed Train to Huaihua + Bus: <strong>4-5 hours total</strong></li>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>2.5-3.5 hours</strong></li>
                             </ul>
                         </div>
                         
@@ -684,10 +683,9 @@
                         <p>The real inspiration for the floating mountains in James Cameron's "Avatar". Explore thousands of towering quartz sandstone pillars, walk on the world's tallest and longest glass bridges, and take breathtaking cable car rides. A must-visit for nature lovers.</p>
                         
                         <div class="travel-info">
-                            <h4>🚌 From Fenghuang to Zhangjiajie</h4>
+                            <h4>🚄 From Fenghuang to Zhangjiajie</h4>
                             <ul>
-                                <li><span class="transport-icon">🚌</span>Direct Bus: <strong>3.5-4 hours</strong></li>
-                                <li><span class="transport-icon">🚄</span>Train via Jishou: <strong>4-5 hours total</strong></li>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1-1.5 hours</strong></li>
                             </ul>
                         </div>
                         
@@ -768,6 +766,7 @@
             <!-- Return to Wuhan -->
             <div class="timeline-item">
                 <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Wuhan%20Yellow%20Crane%20Tower%20Yangtze%20River%20bridge%20beautiful%20city%20skyline%20China&image_size=landscape_16_9" alt="Wuhan" class="timeline-img">
                     <div class="timeline-info">
                         <span class="day-label">Day 9-10</span>
                         <h3>Return to Wuhan</h3>
@@ -797,8 +796,8 @@
                 </div>
                 <div class="transport-options">
                     <div class="transport-option">
-                        <span class="transport-type">🚄 Train + 🚌 Bus</span>
-                        <span class="transport-time">4-5 hrs</span>
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">2.5-3.5 hrs</span>
                     </div>
                 </div>
             </div>
@@ -811,8 +810,8 @@
                 </div>
                 <div class="transport-options">
                     <div class="transport-option">
-                        <span class="transport-type">🚌 Direct Bus</span>
-                        <span class="transport-time">3.5-4 hrs</span>
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1-1.5 hrs</span>
                     </div>
                 </div>
             </div>
@@ -882,7 +881,6 @@
             <div class="footer-links">
                 <a href="index.html">Home</a>
                 <a href="index.html#destinations">Destinations</a>
-                <a href="index.html#culture">Chinese Culture</a>
                 <a href="index.html#contact">Contact</a>
             </div>
             <p class="copyright">&copy; 2026 Dynamic Tour. All rights reserved.</p>
