@@ -289,6 +289,115 @@
             line-height: 1.6;
         }
         
+        /* Nearby Attractions (High Altitude) */
+        .nearby-section {
+            margin: 3rem 0;
+            padding: 2rem;
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+            border-radius: 16px;
+        }
+        .nearby-title {
+            text-align: center;
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+        }
+        .nearby-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--accent);
+        }
+        .nearby-note {
+            text-align: center;
+            color: #666;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+        .nearby-note strong {
+            color: var(--accent);
+        }
+        .nearby-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        .nearby-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .nearby-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .nearby-card-img {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #1a5276 0%, #2980b9 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+        }
+        .nearby-card-content {
+            padding: 1.5rem;
+        }
+        .nearby-card h4 {
+            color: var(--primary);
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .nearby-card .distance {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .nearby-card p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        .nearby-card .highlights {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        .nearby-card .highlight-tag {
+            background: var(--light);
+            color: var(--primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+        .nearby-card .altitude {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+
         /* Mobile optimization for attractions */
         @media (max-width: 768px) {
             .attraction-content {
@@ -743,6 +852,56 @@
                     <p>Visitors can wander through the picturesque alleys, experience authentic Sichuan tea culture in traditional tea houses, taste delicious local snacks, and admire the beautiful traditional architecture. The area comes alive at night with warm lantern lighting and a lively atmosphere, making it one of Chengdu's most popular and iconic destinations.</p>
                 </div>
             </div>
+        </section>
+
+        <!-- Nearby High Altitude Attractions -->
+        <section class="nearby-section">
+            <h3 class="nearby-title">🏔️ Nearby High-Altitude Attractions</h3>
+            <p class="nearby-note">Chengdu is the gateway to the stunning mountain scenery of western Sichuan! These <strong>2-4 hour</strong> day trips or overnight adventures offer breathtaking views of snow-capped mountains, pristine lakes, and Tibetan culture.</p>
+            
+            <div class="nearby-grid">
+                <!-- Bipenggou -->
+                <div class="nearby-card">
+                    <div class="nearby-card-img">
+                        🏔️
+                    </div>
+                    <div class="nearby-card-content">
+                        <h4>Bipenggou (毕棚沟)</h4>
+                        <span class="distance">📍 ~200km / 3-4 hours from Chengdu</span>
+                        <div class="altitude">⛰️ Altitude: 2,000-5,000m</div>
+                        <p>A spectacular alpine valley known for its crystal-clear turquoise lakes, cascading waterfalls, snow-capped Princess Peak (女皇峰), and ancient forests. Perfect for photography, hiking, and experiencing Tibetan village culture.</p>
+                        <div class="highlights">
+                            <span class="highlight-tag">Napa Lake (娜姆湖)</span>
+                            <span class="highlight-tag">Panlong Waterfall</span>
+                            <span class="highlight-tag">Alpine Grasslands</span>
+                            <span class="highlight-tag">Tibetan Villages</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Siguniang (Four Sisters Mountain) -->
+                <div class="nearby-card">
+                    <div class="nearby-card-img" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        🗻🗻
+                    </div>
+                    <div class="nearby-card-content">
+                        <h4>Siguniang (Four Sisters Mountain 四姑娘山)</h4>
+                        <span class="distance">📍 ~220km / 3-4 hours from Chengdu</span>
+                        <div class="altitude">⛰️ Altitude: Up to 6,250m (Yao Mei Feng)</div>
+                        <p>Known as the "Oriental Alps," this stunning mountain range features four majestic peaks. The area offers incredible hiking trails, alpine meadows, and world-class climbing opportunities. A paradise for hikers and nature enthusiasts!</p>
+                        <div class="highlights">
+                            <span class="highlight-tag">Shuangqiao Valley</span>
+                            <span class="highlight-tag">Changping Valley</span>
+                            <span class="highlight-tag">Haizi Valley</span>
+                            <span class="highlight-tag">Hiking Paradise</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="nearby-note" style="margin-top: 1.5rem; font-size: 0.9rem;">
+                💡 <strong>Tip:</strong> These high-altitude areas require proper preparation. Bring warm clothing, rain gear, and consider altitude sickness precautions. Visit in <strong>May-June</strong> (flowers) or <strong>September-October</strong> (autumn colors) for the best views!
+            </p>
         </section>
 
         <!-- Local Food -->
