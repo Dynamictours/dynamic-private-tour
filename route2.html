@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Route 2 - Dynamic Tour</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 80px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s;
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .menu-btn {
+            display: none;
+        }
+
+        .route-banner {
+            background: linear-gradient(135deg, #2d5016 0%, #4a7c23 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .route-banner h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-path {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-duration {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .route-banner .route-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .highlight-item {
+            text-align: center;
+        }
+        .highlight-item .highlight-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .highlight-item .highlight-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .highlight-item .highlight-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .route-overview {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary-light);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            width: calc(50% - 30px);
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .timeline-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .timeline-info {
+            padding: 1.5rem;
+        }
+        .timeline-info h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-info .day-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .timeline-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .travel-info {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .travel-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .travel-info ul {
+            list-style: none;
+        }
+        .travel-info li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .travel-info li::before {
+            content: '→';
+            margin-right: 0.5rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .travel-info .transport-icon {
+            margin-right: 0.5rem;
+        }
+
+        .accommodation-card {
+            background: linear-gradient(135deg, #fff5eb 0%, #fff 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        .accommodation-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .accommodation-card h4::before {
+            content: '🏨';
+            margin-right: 0.5rem;
+        }
+        .accommodation-card .hotel-list {
+            list-style: none;
+        }
+        .accommodation-card .hotel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--gray);
+        }
+        .accommodation-card .hotel-item:last-child {
+            border-bottom: none;
+        }
+        .accommodation-card .hotel-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .accommodation-card .hotel-area {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .accommodation-card .hotel-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .accommodation-card .hotel-tip {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .travel-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .travel-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .travel-card .route-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .travel-card .city-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .travel-card .arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        .travel-card .transport-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .transport-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+        .transport-option .transport-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .transport-option .transport-time {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .transport-option .transport-price {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .tips-section {
+            background: #2d5016;
+            color: white;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+        .tips-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .tips-section h2 {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .tip-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .tip-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        .tip-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 2rem auto;
+            display: flex;
+            width: fit-content;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 125, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-img {
+                height: 60px;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                padding-left: 50px;
+            }
+            .timeline-content {
+                width: 100%;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+            .route-banner {
+                padding: 2.5rem 1rem;
+            }
+            .route-highlights {
+                gap: 1rem;
+            }
+            .highlight-item {
+                min-width: 80px;
+            }
+            .timeline-img {
+                height: 150px;
+            }
+            .footer-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-info {
+                padding: 1rem;
+            }
+            .timeline-info h3 {
+                font-size: 1.2rem;
+            }
+            .travel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#map-section">China Map</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="route-banner">
+        <h1>Route 2: Central China Adventure</h1>
+        <p class="route-path">Wuhan → Fenghuang → Zhangjiajie → Changsha → Wuhan</p>
+        <span class="route-duration">📅 Recommended: 8-10 Days</span>
+        <div class="route-highlights">
+            <div class="highlight-item">
+                <div class="highlight-icon">🏔️</div>
+                <div class="highlight-label">Mountains</div>
+                <div class="highlight-value">Zhangjiajie</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🏘️</div>
+                <div class="highlight-label">Ancient Town</div>
+                <div class="highlight-value">Fenghuang</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🌶️</div>
+                <div class="highlight-label">Spicy Food</div>
+                <div class="highlight-value">Hunan Cuisine</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🌸</div>
+                <div class="highlight-label">Cherry Blossoms</div>
+                <div class="highlight-value">Wuhan</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="route-overview">
+        <h2 class="section-title">Route Itinerary</h2>
+
+        <div class="timeline">
+            <!-- Wuhan -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Wuhan%20Yellow%20Crane%20Tower%20Yangtze%20River%20cherry%20blossom&image_size=landscape_16_9" alt="Wuhan" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 1-2</span>
+                        <h3>Wuhan - The City of Cherry Blossoms</h3>
+                        <p>Located at the confluence of the Yangtze and Han Rivers, Wuhan is a major cultural and economic center. Famous for its stunning cherry blossoms in spring at East Lake, the iconic Yellow Crane Tower, and delicious hot dry noodles (reganmian).</p>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Wuhan Plaza / Jianghan Road</div>
+                                        <div class="hotel-area">City center, nightlife, shopping</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-1000/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">East Lake Area</div>
+                                        <div class="hotel-area">Scenic, peaceful, near cherry blossoms</div>
+                                    </div>
+                                    <div class="hotel-price">¥350-800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Chuhe Hanjie</div>
+                                        <div class="hotel-area">Modern entertainment district</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1200/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 If visiting in March-April, book hotels near East Lake early for cherry blossom season.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Fenghuang -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/fenghuang.jpeg" alt="Fenghuang" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 3-4</span>
+                        <h3>Fenghuang - Phoenix Ancient Town</h3>
+                        <p>One of China's most beautiful water towns with traditional stilt houses built along the Tuojiang River. Explore the magical night views, visit ancient city gates, and experience Miao ethnic culture. Perfect for photographers and history lovers.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Wuhan to Fenghuang</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train to Huaihua: <strong>2.5-3 hours</strong> (¥241-711)</li>
+                                <li><span class="transport-icon">🚌</span>Bus from Huaihua to Fenghuang: <strong>1-1.5 hours</strong> (¥30-50)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Old Town (Tuojiang River)</div>
+                                        <div class="hotel-area">River views, stilt houses</div>
+                                    </div>
+                                    <div class="hotel-price">¥200-600/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Outside Old Town</div>
+                                        <div class="hotel-area">Quieter, better value</div>
+                                    </div>
+                                    <div class="hotel-price">¥150-400/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Stay in a riverside guesthouse for the best night views. Fenghuang comes alive after dark!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Zhangjiajie -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/zhangjiajie.jpg" alt="Zhangjiajie" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 5-7</span>
+                        <h3>Zhangjiajie - The Avatar Mountains</h3>
+                        <p>The real inspiration for the floating mountains in James Cameron's "Avatar". Explore thousands of towering quartz sandstone pillars, walk on the world's tallest and longest glass bridges, and take breathtaking cable car rides. A must-visit for nature lovers.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚌 From Fenghuang to Zhangjiajie</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚌</span>Direct Bus: <strong>3.5-4 hours</strong> (¥80-120)</li>
+                                <li><span class="transport-icon">🚄</span>Train via Jishou: <strong>4-5 hours total</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Zhangjiajie City</div>
+                                        <div class="hotel-area">Convenient, good restaurants</div>
+                                    </div>
+                                    <div class="hotel-price">¥200-600/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Wulingyuan Scenic Area</div>
+                                        <div class="hotel-area">Closer to park entrance</div>
+                                    </div>
+                                    <div class="hotel-price">¥250-800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Tianmen Mountain Area</div>
+                                        <div class="hotel-area">Near cable car station</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-1000/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Stay in Wulingyuan for easy access to the national park. Buy a 4-day park pass for the best experience.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Changsha -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Changsha%20Orange%20Island%20Mao%20Zedong%20statue%20Yuelu%20Academy&image_size=landscape_16_9" alt="Changsha" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 8-9</span>
+                        <h3>Changsha - Capital of Hunan Province</h3>
+                        <p>Known for its spicy Hunan cuisine (the hometown of Chairman Mao), Changsha offers a vibrant cultural scene. Visit the iconic Orange Island with its giant Mao Zedong statue, explore ancient Yuelu Academy, and indulge in world-famous stinky tofu and spicy crayfish.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Zhangjiajie to Changsha</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1.5-2.5 hours</strong> (¥152-464)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Wuyi Square</div>
+                                        <div class="hotel-area">City center, shopping, nightlife</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-1200/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Orange Island / Xiangjiang</div>
+                                        <div class="hotel-area">River views, scenic</div>
+                                    </div>
+                                    <div class="hotel-price">¥350-1000/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Yuelu Mountain Area</div>
+                                        <div class="hotel-area">Near university, cultural</div>
+                                    </div>
+                                    <div class="hotel-price">¥200-600/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Don't miss Taiping Old Street for snacks. Changsha is the birthplace of stinky tofu!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Return to Wuhan -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 9-10</span>
+                        <h3>Return to Wuhan</h3>
+                        <p>Complete your Central China adventure by returning to Wuhan, where you can do some last-minute shopping or visit any attractions you may have missed at the start of your journey.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Changsha to Wuhan</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1.5-2 hours</strong> (¥164-498)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="travel-section">
+        <h2 class="section-title">Travel Time Summary</h2>
+        <div class="travel-grid">
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Wuhan</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Fenghuang</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 Train + 🚌 Bus</span>
+                        <span class="transport-time">4-5 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Fenghuang</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Zhangjiajie</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚌 Direct Bus</span>
+                        <span class="transport-time">3.5-4 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Zhangjiajie</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Changsha</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1.5-2.5 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Changsha</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Wuhan</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1.5-2 hrs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tips-section">
+        <div class="tips-container">
+            <h2>Travel Tips for Route 2</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h3>🎫 Zhangjiajie Park Pass</h3>
+                    <p>The national park offers 4-day passes (¥228). Book online in advance. Arrive early to avoid crowds at popular viewpoints.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🌶️ Spicy Food Alert</h3>
+                    <p>Hunan cuisine is famously spicy! If you can't handle heat, ask for "bu la" (not spicy) or "shao la" (less spicy) when ordering.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>💰 Budget</h3>
+                    <p>Mid-range budget: ¥600-1200/day per person. Zhangjiajie park tickets and transportation are the biggest expenses.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🏔️ Best Time to Visit</h3>
+                    <p>Autumn (September-October) for Zhangjiajie with clear skies. Spring (March-April) for Wuhan cherry blossoms.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🎒 Hiking Essentials</h3>
+                    <p>For Zhangjiajie: comfortable hiking shoes, rain jacket (sudden showers), water, snacks, and a camera with extra batteries.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🏮 Fenghuang at Night</h3>
+                    <p>Fenghuang Ancient Town is magical after dark. Take a river boat ride (¥80-120) for stunning views of illuminated stilt houses.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="index.html" class="back-btn">← Back to All Routes</a>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Dynamic Tour. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Route 3 - Dynamic Tour</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 80px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s;
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .menu-btn {
+            display: none;
+        }
+
+        .route-banner {
+            background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .route-banner h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-path {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-duration {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .route-banner .route-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .highlight-item {
+            text-align: center;
+        }
+        .highlight-item .highlight-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .highlight-item .highlight-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .highlight-item .highlight-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        .route-overview {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary-light);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            width: calc(50% - 30px);
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .timeline-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .timeline-info {
+            padding: 1.5rem;
+        }
+        .timeline-info h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-info .day-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .timeline-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        .travel-info {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .travel-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .travel-info ul {
+            list-style: none;
+        }
+        .travel-info li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .travel-info li::before {
+            content: '→';
+            margin-right: 0.5rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .travel-info .transport-icon {
+            margin-right: 0.5rem;
+        }
+
+        .accommodation-card {
+            background: linear-gradient(135deg, #fff5eb 0%, #fff 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        .accommodation-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .accommodation-card h4::before {
+            content: '🏨';
+            margin-right: 0.5rem;
+        }
+        .accommodation-card .hotel-list {
+            list-style: none;
+        }
+        .accommodation-card .hotel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--gray);
+        }
+        .accommodation-card .hotel-item:last-child {
+            border-bottom: none;
+        }
+        .accommodation-card .hotel-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .accommodation-card .hotel-area {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .accommodation-card .hotel-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .accommodation-card .hotel-tip {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        .travel-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .travel-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .travel-card .route-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .travel-card .city-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .travel-card .arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        .travel-card .transport-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .transport-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+        .transport-option .transport-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .transport-option .transport-time {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .transport-option .transport-price {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        .tips-section {
+            background: #8B4513;
+            color: white;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+        .tips-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .tips-section h2 {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .tip-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .tip-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        .tip-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        .back-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 2rem auto;
+            display: flex;
+            width: fit-content;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 125, 0, 0.3);
+        }
+
+        .special-card {
+            background: linear-gradient(135deg, #e8f5e9 0%, #fff 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #4CAF50;
+        }
+        .special-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .special-card h4::before {
+            content: '🏔️';
+            margin-right: 0.5rem;
+        }
+        .special-card p {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .special-card .highlight {
+            color: #4CAF50;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-img {
+                height: 60px;
+            }
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                padding-left: 50px;
+            }
+            .timeline-content {
+                width: 100%;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+            .route-banner {
+                padding: 2.5rem 1rem;
+            }
+            .route-highlights {
+                gap: 1rem;
+            }
+            .highlight-item {
+                min-width: 80px;
+            }
+            .timeline-img {
+                height: 150px;
+            }
+            .footer-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-info {
+                padding: 1rem;
+            }
+            .timeline-info h3 {
+                font-size: 1.2rem;
+            }
+            .travel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#map-section">China Map</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="route-banner">
+        <h1>Route 3: Sichuan Hotpot & Mountains</h1>
+        <p class="route-path">Chengdu → Bipenggou → Chongqing → Chengdu</p>
+        <span class="route-duration">📅 Recommended: 7-8 Days</span>
+        <div class="route-highlights">
+            <div class="highlight-item">
+                <div class="highlight-icon">🐼</div>
+                <div class="highlight-label">Pandas</div>
+                <div class="highlight-value">Chengdu</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🏔️</div>
+                <div class="highlight-label">Snow Mountains</div>
+                <div class="highlight-value">Bipenggou</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🌶️</div>
+                <div class="highlight-label">Hotpot</div>
+                <div class="highlight-value">Chongqing</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🏙️</div>
+                <div class="highlight-label">Mountain City</div>
+                <div class="highlight-value">Chongqing</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="route-overview">
+        <h2 class="section-title">Route Itinerary</h2>
+
+        <div class="timeline">
+            <!-- Chengdu -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/chengdu.jpg" alt="Chengdu" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 1-2</span>
+                        <h3>Chengdu - Home of Giant Pandas</h3>
+                        <p>China's culinary capital and gateway to Tibet. Visit the world-famous Chengdu Research Base of Giant Panda Breeding, explore ancient Jinli Street, and indulge in authentic Sichuan hotpot, mapo tofu, and kung pao chicken. Don't miss the laid-back Chengdu lifestyle with its famous teahouses and mahjong culture.</p>
+                        
+                        <div class="special-card">
+                            <h4>Nearby Attraction: Bipenggou</h4>
+                            <p><span class="highlight">Note:</span> Bipenggou is a beautiful alpine valley located about <strong>4-5 hours</strong> from Chengdu by car. Known for its snow-capped mountains, turquoise lakes, and colorful autumn foliage. It's a perfect side trip from Chengdu for nature lovers!</p>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay in Chengdu</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Chunxi Road / Taikoo Li</div>
+                                        <div class="hotel-area">City center, best for shopping</div>
+                                    </div>
+                                    <div class="hotel-price">¥350-1500/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Kuanzhai Alley Area</div>
+                                        <div class="hotel-area">Historic district, local flavor</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-1000/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Jinjiang District</div>
+                                        <div class="hotel-area">Near panda base</div>
+                                    </div>
+                                    <div class="hotel-price">¥250-800/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Visit the Panda Base early in the morning (7:30 AM) when pandas are most active. Get there before 9 AM for the best viewing experience!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Bipenggou -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/bipenggou.jpg" alt="Bipenggou" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 3-4</span>
+                        <h3>Bipenggou - The Hidden Gem of Sichuan</h3>
+                        <p>A stunning alpine valley located in Aba Tibetan Autonomous Prefecture, about <strong>200km northwest of Chengdu</strong>. Famous for its dramatic mountain scenery, pristine lakes, waterfalls, and Tibetan culture. Best visited in autumn (October) for golden foliage or winter for snow activities.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚌 From Chengdu to Bipenggou</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚗</span>Private Car/Taxi: <strong>4-5 hours</strong> (¥300-500 one-way)</li>
+                                <li><span class="transport-icon">🚌</span>Bus from Chadianzi Station: <strong>4-5 hours</strong> (¥60-80)</li>
+                                <li><span class="transport-icon">🚐</span>Join a day tour: most convenient option</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="special-card">
+                            <h4>What to See in Bipenggou</h4>
+                            <p><strong>🏞️ Highlights:</strong> Napa Lake (娜姆湖), Princess Lake (女皇峰), Alpine Meadows, Ancient Bipenggou Waterfalls, Tibetan Villages</p>
+                            <p><strong>⛰️ Altitude:</strong> 2,000-5,000 meters above sea level</p>
+                            <p><strong>🌤️ Best Time:</strong> October (autumn colors), December-February (skiing)</p>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay in Bipenggou</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Bipenggou Scenic Area</div>
+                                        <div class="hotel-area">Inside the park, limited options</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Li County (Lixian)</div>
+                                        <div class="hotel-area">30 mins from entrance</div>
+                                    </div>
+                                    <div class="hotel-price">¥200-500/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Bring warm clothing even in summer! Temperatures drop significantly at higher altitudes. Consider altitude sickness precautions.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Chongqing -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/chongqing.jpg" alt="Chongqing" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 5-7</span>
+                        <h3>Chongqing - The Mountain City</h3>
+                        <p>The famous "3D city" built on mountains with stunning night views, spicy hotpot, and unique stilt house architecture. Take the famous Hongyadong (Hongya Cave), walk through ancient Ciqikou Ancient Town, and ride the famous Liziba Metro Station that goes through a building!</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Chengdu to Chongqing</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1.5-2 hours</strong> (¥154-468)</li>
+                            </ul>
+                            <p style="margin-top: 0.5rem; font-size: 0.85rem; color: #666;">(From Bipenggou, return to Chengdu first (4-5 hours), then take high-speed train to Chongqing.</p>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay in Chongqing</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Jiefangbei (People's Liberation Monument)</div>
+                                        <div class="hotel-area">City center, near Hongyadong</div>
+                                    </div>
+                                    <div class="hotel-price">¥350-1500/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Hongyadong Area</div>
+                                        <div class="hotel-area">Stunning night views</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Ciqikou Ancient Town</div>
+                                        <div class="hotel-area">Cultural area</div>
+                                    </div>
+                                    <div class="hotel-price">¥250-800/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Book a hotel with river views for the best night views of Chongqing's famous skyline. Don't miss the cruise on Yangtze River!</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Return to Chengdu -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 7-8</span>
+                        <h3>Return to Chengdu</h3>
+                        <p>Complete your Sichuan adventure by returning to Chengdu. Enjoy one last Sichuan hotpot meal or do some last-minute shopping for tea and local specialties before your departure.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Chongqing to Chengdu</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1.5-2 hours</strong> (¥154-468)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="travel-section">
+        <h2 class="section-title">Travel Time Summary</h2>
+        <div class="travel-grid">
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Chengdu</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Bipenggou</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚗 Private Car</span>
+                        <span class="transport-time">4-5 hrs</span>
+                    </div>
+                    <div class="transport-option">
+                        <span class="transport-type">🚌 Bus</span>
+                        <span class="transport-time">4-5 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Bipenggou</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Chongqing</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚗 + 🚄 Via Chengdu</span>
+                        <span class="transport-time">6-8 hrs total</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Chengdu</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Chongqing</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1.5-2 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Chongqing</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Chengdu</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1.5-2 hrs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="tips-section">
+        <div class="tips-container">
+            <h2>Travel Tips for Route 3</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h3>🌶️ Spice Level</h3>
+                    <p>Sichuan and Chongqing food is NUMBING SPICY (ma la). Ask for "wei la" (mild spicy) if you're not used to it. Always have milk or yogurt ready!</p>
+                </div>
+                <div class="tip-card">
+                    <h3>💰 Budget</h3>
+                    <p>Mid-range budget: ¥700-1300/day. Hotpot meals ¥80-200/person. Bipenggou entrance ¥80 + shuttle bus ¥60.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🏔️ Altitude in Bipenggou</h3>
+                    <p>Bipenggou reaches 3,000m+. Take it slow on first day, drink plenty of water, avoid alcohol.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🐼 Panda Visiting Tips</h3>
+                    <p>Visit Chengdu Panda Base early morning 7:30 AM. Avoid weekends and holidays. Book tickets online.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🚗 Getting to Bipenggou</h3>
+                    <p>Best way: join a day tour from Chengdu or hire a private driver. Public buses available but less convenient.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🌡️ Best Time</h3>
+                    <p>Autumn (September-October: best weather. Spring: March-April: cherry blossoms. Winter: December-February: snow in Bipenggou.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <a href="index.html" class="back-btn">← Back to All Routes</a>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Dynamic Tour. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

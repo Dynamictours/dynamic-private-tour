@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="format-detection" content="email=no">
+    <title>Route 1 - Dynamic Tour</title>
+    <link rel="sitemap" type="application/xml" title="Sitemap" href="https://jeanetdjayat-code.github.io/dynamic-tour/sitemap.xml">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            scroll-behavior: smooth;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+        }
+
+        :root {
+            --primary: #0F3057;
+            --primary-light: #1a4a7a;
+            --accent: #ff7d00;
+            --light: #f8f9fa;
+            --gray: #eee;
+            --dark: #333;
+            --wechat-green: #07C160;
+            --safe-top: env(safe-area-inset-top, 0px);
+            --safe-bottom: env(safe-area-inset-bottom, 0px);
+            --safe-left: env(safe-area-inset-left, 0px);
+            --safe-right: env(safe-area-inset-right, 0px);
+        }
+
+        body {
+            background: var(--light);
+            color: var(--dark);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        button, a {
+            touch-action: manipulation;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+        }
+
+        a {
+            -webkit-user-select: none;
+            user-select: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 999;
+        }
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem 2rem;
+        }
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+        .logo-img {
+            height: 80px;
+            width: auto;
+            background-color: #f0f0f0;
+            border-radius: 8px;
+        }
+        .logo-text {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.8rem;
+        }
+        .nav-links a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s, transform 0.2s;
+            padding: 0.2rem 0;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+        .menu-btn {
+            display: none;
+        }
+
+        /* Route Banner */
+        .route-banner {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+        .route-banner h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-path {
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            opacity: 0.95;
+            margin-bottom: 1rem;
+        }
+        .route-banner .route-duration {
+            display: inline-block;
+            background: var(--accent);
+            padding: 0.5rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+        }
+        .route-banner .route-highlights {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .highlight-item {
+            text-align: center;
+        }
+        .highlight-item .highlight-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        .highlight-item .highlight-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        .highlight-item .highlight-value {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+
+        /* Route Overview */
+        .route-overview {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .section-title {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: var(--primary);
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--accent);
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: var(--primary-light);
+            border-radius: 2px;
+        }
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) {
+            flex-direction: row;
+        }
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        .timeline-content {
+            width: calc(50% - 30px);
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .timeline-content:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+        }
+        .timeline-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .timeline-info {
+            padding: 1.5rem;
+        }
+        .timeline-info h3 {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+        }
+        .timeline-info .day-label {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+        }
+        .timeline-info p {
+            color: #666;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            background: var(--accent);
+            border: 4px solid var(--primary);
+            border-radius: 50%;
+            z-index: 1;
+        }
+
+        /* Travel Info Card */
+        .travel-info {
+            background: var(--light);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .travel-info h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+        }
+        .travel-info ul {
+            list-style: none;
+        }
+        .travel-info li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        .travel-info li::before {
+            content: '→';
+            margin-right: 0.5rem;
+            color: var(--accent);
+            font-weight: bold;
+        }
+        .travel-info .transport-icon {
+            margin-right: 0.5rem;
+        }
+
+        /* Accommodation Card */
+        .accommodation-card {
+            background: linear-gradient(135deg, #fff5eb 0%, #fff 100%);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--accent);
+        }
+        .accommodation-card h4 {
+            color: var(--primary);
+            margin-bottom: 0.8rem;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        .accommodation-card h4::before {
+            content: '🏨';
+            margin-right: 0.5rem;
+        }
+        .accommodation-card .hotel-list {
+            list-style: none;
+        }
+        .accommodation-card .hotel-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0.5rem 0;
+            border-bottom: 1px dashed var(--gray);
+        }
+        .accommodation-card .hotel-item:last-child {
+            border-bottom: none;
+        }
+        .accommodation-card .hotel-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        .accommodation-card .hotel-area {
+            font-size: 0.8rem;
+            color: #666;
+        }
+        .accommodation-card .hotel-price {
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 0.9rem;
+        }
+        .accommodation-card .hotel-tip {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.5rem;
+            font-style: italic;
+        }
+
+        /* Travel Between Cities */
+        .travel-section {
+            max-width: 1200px;
+            margin: 3rem auto;
+            padding: 0 2rem;
+        }
+        .travel-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+        .travel-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+        .travel-card .route-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .travel-card .city-name {
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 1.1rem;
+        }
+        .travel-card .arrow {
+            color: var(--accent);
+            font-size: 1.5rem;
+        }
+        .travel-card .transport-options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        .transport-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.8rem;
+            background: var(--light);
+            border-radius: 8px;
+        }
+        .transport-option .transport-type {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+        .transport-option .transport-time {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        .transport-option .transport-price {
+            font-size: 0.8rem;
+            color: #666;
+        }
+
+        /* Route Tips */
+        .tips-section {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem;
+            margin: 3rem 0;
+        }
+        .tips-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .tips-section h2 {
+            text-align: center;
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            margin-bottom: 2rem;
+        }
+        .tips-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        .tip-card {
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+        .tip-card h3 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        .tip-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 3rem 2rem 1.5rem;
+            text-align: center;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            opacity: 0.8;
+            transition: opacity 0.3s;
+        }
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        .copyright {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            background: var(--accent);
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin: 2rem auto;
+            display: flex;
+            width: fit-content;
+        }
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(255, 125, 0, 0.3);
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            .nav-container {
+                padding: 0.8rem 1rem;
+            }
+            .logo-text {
+                font-size: 1.2rem;
+            }
+            .logo-img {
+                height: 60px;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+            .timeline-item,
+            .timeline-item:nth-child(even) {
+                flex-direction: row;
+                padding-left: 50px;
+            }
+            .timeline-content {
+                width: 100%;
+            }
+            .timeline-dot {
+                left: 20px;
+            }
+
+            .route-banner {
+                padding: 2.5rem 1rem;
+            }
+            .route-highlights {
+                gap: 1rem;
+            }
+            .highlight-item {
+                min-width: 80px;
+            }
+
+            .timeline-img {
+                height: 150px;
+            }
+
+            .footer-links {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .timeline-info {
+                padding: 1rem;
+            }
+            .timeline-info h3 {
+                font-size: 1.2rem;
+            }
+            .travel-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo-container">
+                <img src="images/logo.jpeg.jpeg" alt="Dynamic Tour" class="logo-img">
+                <span class="logo-text">Dynamic Tour</span>
+            </a>
+            <div class="nav-links">
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#map-section">China Map</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Route Banner -->
+    <section class="route-banner">
+        <h1>Route 1: Eastern China Classic</h1>
+        <p class="route-path">Shanghai → Beijing → Nanjing → Suzhou → Hangzhou → Shanghai</p>
+        <span class="route-duration">📅 Recommended: 10-12 Days</span>
+        <div class="route-highlights">
+            <div class="highlight-item">
+                <div class="highlight-icon">🏙️</div>
+                <div class="highlight-label">Cities</div>
+                <div class="highlight-value">5</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🚄</div>
+                <div class="highlight-label">High-Speed Rail</div>
+                <div class="highlight-value">Yes</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🏛️</div>
+                <div class="highlight-label">Historic Sites</div>
+                <div class="highlight-value">Many</div>
+            </div>
+            <div class="highlight-item">
+                <div class="highlight-icon">🍜</div>
+                <div class="highlight-label">Food Variety</div>
+                <div class="highlight-value">Excellent</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Route Overview -->
+    <section class="route-overview">
+        <h2 class="section-title">Route Itinerary</h2>
+
+        <div class="timeline">
+            <!-- Shanghai -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/waitan.jpeg" alt="Shanghai" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 1-3</span>
+                        <h3>Shanghai - The Modern Metropolis</h3>
+                        <p>China's largest city and financial hub. Explore the iconic Bund skyline, traditional Yu Garden, and trendy French Concession. Experience the perfect blend of modern skyscrapers and historical architecture.</p>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">The Bund / Nanjing Road</div>
+                                        <div class="hotel-area">City center, close to landmarks</div>
+                                    </div>
+                                    <div class="hotel-price">¥500-1500/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">French Concession</div>
+                                        <div class="hotel-area">Trendy cafes, boutique hotels</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1200/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Pudong (Lujiazui)</div>
+                                        <div class="hotel-area">Luxury hotels, skyline views</div>
+                                    </div>
+                                    <div class="hotel-price">¥800-3000/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Stay near The Bund or People's Square for easy access to major attractions and metro lines.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Beijing -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Beijing%20Forbidden%20City%20imperial%20palace&image_size=landscape_16_9" alt="Beijing" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 4-6</span>
+                        <h3>Beijing - The Imperial Capital</h3>
+                        <p>China's capital city with 3,000 years of history. Visit the magnificent Forbidden City, walk the Great Wall of China, and explore the beautiful Temple of Heaven. Experience authentic Peking duck and hutong culture.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Shanghai to Beijing</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>4.5-5.5 hours</strong> (¥553-1748)</li>
+                                <li><span class="transport-icon">✈️</span>Flight: <strong>2 hours</strong> (¥400-1200)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Wangfujing / Dongdan</div>
+                                        <div class="hotel-area">Central, near Forbidden City</div>
+                                    </div>
+                                    <div class="hotel-price">¥500-1500/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Nanluoguxiang (Hutong Area)</div>
+                                        <div class="hotel-area">Traditional courtyard hotels</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Chaoyang District</div>
+                                        <div class="hotel-area">Modern, good for nightlife</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1200/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Book train tickets in advance (2 weeks) for Beijing trips, especially during peak seasons.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Suzhou -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Suzhou%20classical%20garden%20canal%20water%20town&image_size=landscape_16_9" alt="Suzhou" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 7-8</span>
+                        <h3>Suzhou - The Venice of the East</h3>
+                        <p>Famous for its classical Chinese gardens, ancient canals, and silk production. Visit the UNESCO-listed Humble Administrator's Garden, take a boat ride through Pingjiang Road canals, and learn about traditional silk weaving.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Beijing to Suzhou</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>4-5 hours</strong> (¥523-1648)</li>
+                                <li><span class="transport-icon">✈️</span>Flight to Shanghai + Train: <strong>3-4 hours total</strong></li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Pingjiang Road Historic District</div>
+                                        <div class="hotel-area">Canal views, boutique stays</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-800/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Suzhou Industrial Park</div>
+                                        <div class="hotel-area">Modern, good for business</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1000/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Suzhou is perfect for day trips from Shanghai (30 mins by train), but staying overnight lets you experience the peaceful evenings.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Hangzhou -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="images/hangzhou.jpg" alt="Hangzhou" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 9-10</span>
+                        <h3>Hangzhou - The Paradise on Earth</h3>
+                        <p>Marco Polo once called Hangzhou "the finest and noblest city in the world." Known for the stunning West Lake, Longjing tea plantations, and rich cultural heritage. Cycle around the lake, visit Lingyin Temple, and taste authentic Hangzhou cuisine.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Suzhou to Hangzhou</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1-1.5 hours</strong> (¥110-348)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">West Lake Area (Youshan Road)</div>
+                                        <div class="hotel-area">Scenic views, close to attractions</div>
+                                    </div>
+                                    <div class="hotel-price">¥500-1500/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Qinghefang Ancient Street</div>
+                                        <div class="hotel-area">Historic district, local flavor</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-700/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Binjiang District</div>
+                                        <div class="hotel-area">Modern, good for long stays</div>
+                                    </div>
+                                    <div class="hotel-price">¥300-800/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 Book a hotel with West Lake view for the best experience. Early morning and evening are the best times to visit the lake.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Nanjing -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <img src="https://trae-api-cn.mchost.guru/api/ide/v1/text_to_image?prompt=Nanjing%20Ming%20Dynasty%20palace%20city%20wall&image_size=landscape_16_9" alt="Nanjing" class="timeline-img">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 11-12</span>
+                        <h3>Nanjing - The Southern Capital</h3>
+                        <p>Former capital of China with rich imperial history. Explore the Ming Xiaoling Mausoleum, walk the ancient Nanjing City Wall, and visit the Presidential Palace. Don't miss the beautiful Xuanwu Lake and the memorial sites that tell China's modern history.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Hangzhou to Nanjing</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1.5-2 hours</strong> (¥117-371)</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="accommodation-card">
+                            <h4>Where to Stay</h4>
+                            <ul class="hotel-list">
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Xinjiekou CBD</div>
+                                        <div class="hotel-area">City center, convenient</div>
+                                    </div>
+                                    <div class="hotel-price">¥350-1200/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Xuanwu Lake Area</div>
+                                        <div class="hotel-area">Lake views, peaceful</div>
+                                    </div>
+                                    <div class="hotel-price">¥400-1000/night</div>
+                                </li>
+                                <li class="hotel-item">
+                                    <div>
+                                        <div class="hotel-name">Fuzimiao (Confucius Temple)</div>
+                                        <div class="hotel-area">Historic district, night markets</div>
+                                    </div>
+                                    <div class="hotel-price">¥250-600/night</div>
+                                </li>
+                            </ul>
+                            <p class="hotel-tip">💡 From Nanjing, high-speed trains connect you back to Shanghai in just 1-1.5 hours, making it easy to wrap up your journey.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+
+            <!-- Return to Shanghai -->
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-info">
+                        <span class="day-label">Day 12</span>
+                        <h3>Return to Shanghai</h3>
+                        <p>Complete your Eastern China journey by returning to Shanghai, where you can do some last-minute shopping at Nanjing Road or relax before your departure.</p>
+                        
+                        <div class="travel-info">
+                            <h4>🚄 From Nanjing to Shanghai</h4>
+                            <ul>
+                                <li><span class="transport-icon">🚄</span>High-Speed Train: <strong>1-1.5 hours</strong> (¥134-429)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="timeline-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Travel Between Cities Summary -->
+    <section class="travel-section">
+        <h2 class="section-title">Travel Time Summary</h2>
+        <div class="travel-grid">
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Shanghai</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Beijing</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">4.5-5.5 hrs</span>
+                    </div>
+                    <div class="transport-option">
+                        <span class="transport-type">✈️ Flight</span>
+                        <span class="transport-time">2 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Beijing</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Suzhou</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">4-5 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Suzhou</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Hangzhou</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1-1.5 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Hangzhou</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Nanjing</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1.5-2 hrs</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="travel-card">
+                <div class="route-indicator">
+                    <span class="city-name">Nanjing</span>
+                    <span class="arrow">→</span>
+                    <span class="city-name">Shanghai</span>
+                </div>
+                <div class="transport-options">
+                    <div class="transport-option">
+                        <span class="transport-type">🚄 High-Speed Train</span>
+                        <span class="transport-time">1-1.5 hrs</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tips Section -->
+    <section class="tips-section">
+        <div class="tips-container">
+            <h2>Travel Tips for Route 1</h2>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <h3>🎫 Train Tickets</h3>
+                    <p>Book high-speed train tickets 2-4 weeks in advance, especially during peak seasons (Spring Festival, National Day). Use 12306 app for bookings.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>💰 Budget</h3>
+                    <p>Mid-range budget: ¥800-1500/day per person including accommodation, food, transportation, and attractions.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🌡️ Best Time</h3>
+                    <p>Spring (April-May) and Autumn (September-October) offer the most comfortable weather for this route.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🚇 Transportation</h3>
+                    <p>All cities have excellent metro systems. Get a transportation card (Yikatong) for seamless travel on buses and subway.</p>
+                </div>
+                <div class="tip-card">
+                    <h3>📱 Apps</h3>
+                    <p>Download: 12306 (trains), Alipay/WeChat Pay (payments), Didi (ride-hailing), Ctrip (hotels).</p>
+                </div>
+                <div class="tip-card">
+                    <h3>🍜 Must-Try Foods</h3>
+                    <p>Shanghai: xiaolongbao, Beijing: Peking duck, Suzhou: squirrel fish, Hangzhou: West Lake vinegar fish, Nanjing: salted duck.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Back Button -->
+    <a href="index.html" class="back-btn">← Back to All Routes</a>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="index.html">Home</a>
+                <a href="index.html#destinations">Destinations</a>
+                <a href="index.html#culture">Chinese Culture</a>
+                <a href="index.html#contact">Contact</a>
+            </div>
+            <p class="copyright">&copy; 2026 Dynamic Tour. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>
